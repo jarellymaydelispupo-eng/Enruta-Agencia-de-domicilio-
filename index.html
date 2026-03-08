@@ -1,96 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
-<title>EnRuta Delivery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnRuta - Agencia de Domicilios</title>
 
 <style>
 
 body{
-font-family: Arial;
-margin:0;
+font-family: Arial, sans-serif;
 background:#f4f4f4;
+margin:0;
+padding:0;
+text-align:center;
 }
 
 header{
-background:#ff6600;
+background:#0a3d62;
 color:white;
-text-align:center;
 padding:20px;
 }
 
 .logo{
 width:200px;
-margin-bottom:10px;
+margin-top:10px;
 }
 
-nav{
-background:#222;
-padding:15px;
-text-align:center;
-}
-
-nav a{
-color:white;
-margin:10px;
-text-decoration:none;
-}
-
-section{
+.container{
+background:white;
+margin:20px;
 padding:20px;
-text-align:center;
+border-radius:10px;
+box-shadow:0px 0px 10px rgba(0,0,0,0.1);
 }
 
-input, textarea{
-width:80%;
+input, textarea, select{
+width:90%;
 padding:10px;
-margin:5px;
+margin:10px;
+border-radius:5px;
+border:1px solid #ccc;
 }
 
 button{
-background:#ff6600;
+background:#27ae60;
 color:white;
+padding:12px;
 border:none;
-padding:12px 20px;
-margin:10px;
 border-radius:5px;
 font-size:16px;
+cursor:pointer;
+width:95%;
 }
 
-table{
-width:90%;
-margin:auto;
-border-collapse:collapse;
-background:white;
-}
-
-th,td{
-border:1px solid #ddd;
-padding:10px;
-}
-
-th{
-background:#ff6600;
-color:white;
-}
-
-#listaPedidos{
-margin-top:20px;
-}
-
-.pedido{
-background:white;
-padding:15px;
-margin:10px;
-border-radius:10px;
-}
-
-footer{
-background:black;
-color:white;
-text-align:center;
-padding:15px;
+button:hover{
+background:#219150;
 }
 
 </style>
@@ -100,183 +64,57 @@ padding:15px;
 
 <header>
 
-<img src="logo.png" class="logo">
+<img src="1772931732602.png" class="logo">
 
-<h1>EnRuta Delivery 🛵</h1>
-
-<p>Tu envío ya va en camino</p>
+<h1>EnRuta</h1>
+<p>Agencia de domicilios</p>
 
 </header>
 
-<nav>
+<div class="container">
 
-<a href="#">Pedir envío</a>
-<a href="#">Servicios</a>
-<a href="#">Precios</a>
-<a href="#">Contacto</a>
+<h2>Solicitar domicilio</h2>
 
-</nav>
+<input type="text" id="nombre" placeholder="Tu nombre">
 
-<section>
+<input type="text" id="telefono" placeholder="Tu teléfono">
 
-<h2>Pedir un domicilio</h2>
+<textarea id="direccion" placeholder="Escribe tu dirección con todos los detalles (barrio, casa, color de la casa, referencias, etc)"></textarea>
 
-<input id="nombre" placeholder="Nombre"><br>
+<input type="text" id="pedido" placeholder="¿Qué deseas pedir?">
 
-<input id="telefono" placeholder="Teléfono"><br>
+<select id="zona">
 
-<input id="recogida" placeholder="Dirección de recogida"><br>
+<option value="Centro">Centro</option>
+<option value="Norte">Zona Norte</option>
+<option value="Sur">Zona Sur</option>
+<option value="Este">Zona Este</option>
+<option value="Oeste">Zona Oeste</option>
 
-<input id="entrega" placeholder="Dirección de entrega"><br>
+</select>
 
-<input id="monto" placeholder="Monto a cobrar"><br>
+<button onclick="enviarPedido()">Enviar pedido por WhatsApp</button>
 
-<textarea id="detalles" placeholder="Describe con lujo de detalles qué se va a recoger o entregar"></textarea>
-
-<br>
-
-<button onclick="enviarPedido()">Solicitar envío</button>
-
-</section>
-
-<section>
-
-<h2>Servicios</h2>
-
-<p>📦 Envío de paquetes</p>
-
-<p>💰 Entrega + Cobro</p>
-
-<p>🛒 Mandados</p>
-
-<p>⚡ Envíos urgentes (+$200)</p>
-
-</section>
-
-<section>
-
-<h2>Precios</h2>
-
-<table>
-
-<tr>
-<th>Zona</th>
-<th>Precio</th>
-</tr>
-
-<tr><td>Centro del pueblo</td><td>$450</td></tr>
-<tr><td>Lenin</td><td>$650</td></tr>
-<tr><td>Modelo</td><td>$550</td></tr>
-<tr><td>La Caridad</td><td>$500</td></tr>
-<tr><td>La Vigía</td><td>$550</td></tr>
-<tr><td>Versalles</td><td>$550</td></tr>
-<tr><td>Jayama</td><td>$650</td></tr>
-<tr><td>La Esperanza</td><td>$600</td></tr>
-<tr><td>Garrido</td><td>$550</td></tr>
-
-</table>
-
-</section>
-
-<section>
-
-<h2>Pedidos en curso</h2>
-
-<div id="listaPedidos"></div>
-
-</section>
-
-<section>
-
-<h2>Contacto</h2>
-
-<a href="https://wa.me/5356746691" target="_blank">
-
-<button>WhatsApp</button>
-
-</a>
-
-</section>
-
-<footer>
-
-© 2026 EnRuta Delivery
-
-</footer>
+</div>
 
 <script>
 
-let pedidos = [];
-
 function enviarPedido(){
 
-let nombre = document.getElementById("nombre").value;
+var nombre=document.getElementById("nombre").value;
+var telefono=document.getElementById("telefono").value;
+var direccion=document.getElementById("direccion").value;
+var pedido=document.getElementById("pedido").value;
+var zona=document.getElementById("zona").value;
 
-let telefono = document.getElementById("telefono").value;
-
-let recogida = document.getElementById("recogida").value;
-
-let entrega = document.getElementById("entrega").value;
-
-let monto = document.getElementById("monto").value;
-
-let detalles = document.getElementById("detalles").value;
-
-let pedido = {nombre,telefono,recogida,entrega,monto,detalles};
-
-pedidos.push(pedido);
-
-mostrarPedidos();
-
-let mensaje = "Nuevo pedido EnRuta:%0A"+
+var mensaje="Nuevo pedido%0A%0A"+
 "Nombre: "+nombre+"%0A"+
 "Teléfono: "+telefono+"%0A"+
-"Recoger: "+recogida+"%0A"+
-"Entregar: "+entrega+"%0A"+
-"Monto: "+monto+"%0A"+
-"Detalles: "+detalles;
+"Dirección: "+direccion+"%0A"+
+"Pedido: "+pedido+"%0A"+
+"Zona: "+zona;
 
-window.open("https://wa.me/5356746691?text="+mensaje);
-
-}
-
-function mostrarPedidos(){
-
-let lista = document.getElementById("listaPedidos");
-
-lista.innerHTML="";
-
-pedidos.forEach((p,i)=>{
-
-lista.innerHTML += `
-<div class="pedido">
-
-<b>${p.nombre}</b><br>
-
-📞 ${p.telefono}<br>
-
-📍 Recoger: ${p.recogida}<br>
-
-🏠 Entregar: ${p.entrega}<br>
-
-💰 $${p.monto}<br>
-
-📦 Detalles: ${p.detalles}<br><br>
-
-<button onclick="entregado(${i})">Entregado</button>
-
-</div>
-`;
-
-});
-
-}
-
-function entregado(i){
-
-pedidos.splice(i,1);
-
-mostrarPedidos();
+window.open("https://wa.me/56746691?text="+mensaje);
 
 }
 
