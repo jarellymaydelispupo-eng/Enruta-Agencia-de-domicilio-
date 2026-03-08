@@ -109,29 +109,35 @@ function enviar(){
     let numPedido = (parseInt(localStorage.getItem('contador')) || 0) + 1;
     localStorage.setItem('contador', numPedido);
 
-    let agenciaBase = (total >= 10000) ? 2000 : 50;
-    let agenciaFinal = agenciaBase + 500;
-    let mensajeroFinal = total - agenciaFinal;
+    let zonaTxt = document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
+    let vehiculo = document.getElementById("vehiculo").value;
+
+    // Lógica financiera correcta
+    let agencia = 50;
+    if (vehiculo === "carrito") { agencia = 2000; }
+    else if (zonaTxt.includes("Florida") || zonaTxt.includes("Vertientes") || zonaTxt.includes("Jimaguayu")) { agencia = 500; }
+    
+    let mensajero = total - agencia;
 
     let nuevoPedido = { 
         id: numPedido, 
         nombre: document.getElementById("nombre").value,
         telefono: document.getElementById("telefono").value,
-        zona: document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text,
+        zona: zonaTxt,
         recoger: document.getElementById("recoger").value,
         entregar: document.getElementById("entregar").value,
         hora: document.getElementById("hora").value,
         pedido: document.getElementById("pedido").value,
         total: total, 
-        agencia: agenciaFinal, 
-        mensajero: mensajeroFinal 
+        agencia: agencia, 
+        mensajero: mensajero 
     };
 
     let pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
     pedidos.push(nuevoPedido);
     localStorage.setItem('pedidos', JSON.stringify(pedidos));
 
-    let texto = `*PEDIDO #${numPedido}*\n*Cliente:* ${nuevoPedido.nombre}\n*Zona:* ${nuevoPedido.zona}\n*Total:* $${total.toLocaleString()}\n*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})\n*Entrega:* ${nuevoPedido.entregar}\n*Qué:* ${nuevoPedido.pedido}\n---\n*Agencia:* $${agenciaFinal}\n*Mensajero:* $${mensajeroFinal.toLocaleString()}`;
+    let texto = `*PEDIDO #${numPedido}*\n*Cliente:* ${nuevoPedido.nombre}\n*Zona:* ${nuevoPedido.zona}\n*Total:* $${total.toLocaleString()}\n*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})\n*Entrega:* ${nuevoPedido.entregar}\n*Qué:* ${nuevoPedido.pedido}\n---\n*Agencia:* $${agencia}\n*Mensajero:* $${mensajero.toLocaleString()}`;
     
     window.open("https://wa.me/5356746691?text=" + encodeURIComponent(texto), '_blank');
 }
@@ -155,5 +161,4 @@ function accederAdmin() {
 actualizarZonas();
 </script>
 </body>
-    </html>
-    
+</html>
