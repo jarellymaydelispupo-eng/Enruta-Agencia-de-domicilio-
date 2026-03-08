@@ -26,7 +26,7 @@
     </div>
 
     <div class="form-group">
-        <label>Vehículo de transporte</label>
+        <label>Vehículo</label>
         <select id="vehiculo" onchange="actualizarZonas()">
             <option value="motorina">Motorina (Zonas Cercanas)</option>
             <option value="carrito">Carrito Eléctrico (Viajes largos)</option>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-group">
-        <label>¿A dónde vamos?</label>
+        <label>Zona de entrega</label>
         <select id="zona" onchange="calcular()">
             <option value="0">Seleccionar destino...</option>
         </select>
@@ -109,18 +109,25 @@ function enviar(){
     let numPedido = (parseInt(localStorage.getItem('contador')) || 0) + 1;
     localStorage.setItem('contador', numPedido);
 
-    let vehiculo = document.getElementById("vehiculo").value;
-    let zonaTxt = document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
-    let agencia = (total >= 10000) ? 2000 : 50;
-    
-    let nuevoPedido = { id: numPedido, zona: zonaTxt, total: total, agencia: agencia, mensajero: total - agencia };
+    let nuevoPedido = { 
+        id: numPedido, 
+        nombre: document.getElementById("nombre").value,
+        telefono: document.getElementById("telefono").value,
+        zona: document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text,
+        recoger: document.getElementById("recoger").value,
+        entregar: document.getElementById("entregar").value,
+        hora: document.getElementById("hora").value,
+        pedido: document.getElementById("pedido").value,
+        total: total, 
+        agencia: (total >= 10000) ? 2000 : 50, 
+        mensajero: total - ((total >= 10000) ? 2000 : 50) 
+    };
+
     let pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
     pedidos.push(nuevoPedido);
     localStorage.setItem('pedidos', JSON.stringify(pedidos));
 
-    let msg = `*PEDIDO #${numPedido}*%0A*Vehículo:* ${vehiculo.toUpperCase()}%0A*Zona:* ${zonaTxt}%0A*Total:* $${total.toLocaleString()}%0A*Recogida:* ${document.getElementById("recoger").value} (${document.getElementById("hora").value})%0A*Entrega:* ${document.getElementById("entregar").value}%0A*Agencia:* $${agencia}%0A*Mensajero:* $${(total-agencia).toLocaleString()}%0A*Cliente:* ${document.getElementById("nombre").value} (${document.getElementById("telefono").value})%0A*Detalle:* ${document.getElementById("pedido").value}`;
-
-    // Abrir WhatsApp directamente
+    let msg = `*PEDIDO #${numPedido}*%0A*Nombre:* ${nuevoPedido.nombre}%0A*Zona:* ${nuevoPedido.zona}%0A*Total:* $${total.toLocaleString()}%0A*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})%0A*Entrega:* ${nuevoPedido.entregar}%0A*Detalle:* ${nuevoPedido.pedido}`;
     window.location.href = `https://wa.me/5356746691?text=${msg}`;
 }
 
@@ -128,13 +135,14 @@ function accederAdmin() {
     let pass = prompt("Ingrese contraseña:");
     if(pass === "061021041122") {
         let pedidos = JSON.parse(localStorage.getItem('pedidos') || '[]');
-        let gananciaHoy = 0;
-        let html = "<h2>Historial de Pedidos</h2><table border='1' width='100%'><tr><th>ID</th><th>Total</th><th>Agencia</th><th>Mensajero</th></tr>";
+        let gananciaTotal = 0;
+        let html = `<h2>Historial de Pedidos</h2><table border='1' width='100%' style='border-collapse:collapse; font-size:12px;'>
+            <tr><th>ID</th><th>Cliente</th><th>Teléfono</th><th>Zona</th><th>Recogida</th><th>Hora</th><th>Entrega</th><th>Detalle</th><th>Total</th><th>Agencia</th><th>Mensajero</th></tr>`;
         pedidos.forEach(p => {
-            html += `<tr><td>${p.id}</td><td>$${p.total}</td><td>$${p.agencia}</td><td>$${p.mensajero}</td></tr>`;
-            gananciaHoy += p.agencia;
+            html += `<tr><td>${p.id}</td><td>${p.nombre}</td><td>${p.telefono}</td><td>${p.zona}</td><td>${p.recoger}</td><td>${p.hora}</td><td>${p.entregar}</td><td>${p.pedido}</td><td>$${p.total}</td><td>$${p.agencia}</td><td>$${p.mensajero}</td></tr>`;
+            gananciaTotal += p.agencia;
         });
-        html += `</table><h3>Total Ganancia: $${gananciaHoy}</h3><button onclick='localStorage.clear(); location.reload()'>Limpiar Datos</button>`;
+        html += `</table><h3>Total Ganancia: $${gananciaTotal}</h3><button onclick='localStorage.clear(); location.reload()'>Borrar todo</button>`;
         let ventana = window.open("", "_blank");
         ventana.document.write(html);
     } else { alert("Contraseña incorrecta"); }
@@ -142,4 +150,5 @@ function accederAdmin() {
 actualizarZonas();
 </script>
 </body>
-</html>
+        </html>
+                                  
