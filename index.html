@@ -4,48 +4,91 @@
 <meta charset="UTF-8">
 <title>EnRuta Delivery</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 
 body{
-font-family: Arial;
-background:#f2f2f2;
-text-align:center;
+font-family:Arial;
+margin:0;
+background:linear-gradient(135deg,#1e90ff,#00c6ff);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .container{
 background:white;
-padding:20px;
-margin:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.2);
+width:95%;
+max-width:500px;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
+text-align:center;
+animation:fade 0.8s ease;
+}
+
+@keyframes fade{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
 }
 
 .logo{
-width:150px;
+width:190px;
+margin-bottom:10px;
+}
+
+h2{
+margin:5px;
+color:#333;
+}
+
+p{
+color:#666;
+margin-bottom:20px;
 }
 
 input,select,textarea{
-width:90%;
-padding:10px;
-margin:8px;
-border-radius:6px;
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
 border:1px solid #ccc;
+font-size:14px;
+}
+
+textarea{
+resize:none;
 }
 
 button{
 background:#25D366;
 color:white;
 border:none;
-padding:12px;
-width:90%;
-font-size:16px;
-border-radius:8px;
+padding:15px;
+width:100%;
+margin-top:15px;
+font-size:17px;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+background:#1ebe5d;
+transform:scale(1.03);
 }
 
 .precio{
-font-size:20px;
-color:red;
-margin:10px;
+font-size:22px;
+color:#ff3b3b;
+margin-top:10px;
+font-weight:bold;
+}
+
+.oculto{
+display:none;
 }
 
 </style>
@@ -56,16 +99,15 @@ margin:10px;
 
 <div class="container">
 
-<img src="logo.png" class="logo">
+<img src="1772931732602.png" class="logo">
 
 <h2>EnRuta Delivery</h2>
-
 <p>Solicita tu domicilio rápido</p>
 
-<select id="servicio">
+<select id="servicio" onchange="mostrarCampo()">
 <option value="">Tipo de servicio</option>
-<option>Entrega de paquete</option>
-<option>Entrega con cobro</option>
+<option value="paquete">Entrega de paquete</option>
+<option value="cobro">Entrega con cobro</option>
 </select>
 
 <select id="zona" onchange="calcular()">
@@ -82,6 +124,7 @@ margin:10px;
 <option value="550">Versalles - $550</option>
 <option value="500">Agramonte - $500</option>
 <option value="650">Jayama - $650</option>
+
 <option value="550">Monte Carlos - $550</option>
 <option value="550">La Mosca - $550</option>
 <option value="550">Marquesado - $550</option>
@@ -90,34 +133,6 @@ margin:10px;
 <option value="550">Garrido - $550</option>
 <option value="600">El Micro - $600</option>
 <option value="550">Palomino - $550</option>
-<option value="550">Juanito - $550</option>
-<option value="500">Previsora - $500</option>
-<option value="600">La Guernina - $600</option>
-<option value="600">La Belén - $600</option>
-<option value="500">Casino Campestre - $500</option>
-<option value="500">Las Mercedes - $500</option>
-<option value="500">Simoni - $500</option>
-<option value="550">Montejo - $550</option>
-<option value="600">La Yaba - $600</option>
-<option value="600">Nadales - $600</option>
-<option value="550">Bella Vista - $550</option>
-<option value="600">Vista Bella - $600</option>
-<option value="550">Inra - $550</option>
-<option value="600">Imán - $600</option>
-<option value="550">Mascota - $550</option>
-<option value="550">Puerto Príncipe - $550</option>
-<option value="650">Isabel Hortensia - $650</option>
-<option value="550">Villa Mariana - $550</option>
-<option value="600">Los Coquitos - $600</option>
-<option value="600">La Zambrana - $600</option>
-<option value="650">Saratoga - $650</option>
-<option value="550">El Jardín - $550</option>
-<option value="500">Floiran Quiroz - $500</option>
-<option value="500">Porvenir - $500</option>
-<option value="600">Nitrógeno - $600</option>
-<option value="550">Buenos Aires - $550</option>
-<option value="550">Camino de la Matanza - $550</option>
-<option value="500">Sanchez Soto - $500</option>
 
 <option value="12000">Minas - $12000</option>
 <option value="14000">Senado - $14000</option>
@@ -133,16 +148,16 @@ margin:10px;
 <div class="precio" id="precio">Precio: $0</div>
 
 <input type="text" id="nombre" placeholder="Nombre">
-
 <input type="text" id="telefono" placeholder="Teléfono">
 
 <input type="text" id="recoger" placeholder="Dirección de recogida">
-
 <input type="text" id="entregar" placeholder="Dirección de entrega">
 
 <textarea id="pedido" placeholder="Qué se va a enviar"></textarea>
 
-<input type="text" id="cobro" placeholder="Monto a cobrar (solo si es entrega con cobro)">
+<input type="text" id="importe" placeholder="Importe del viaje">
+
+<input type="text" id="cobro" class="oculto" placeholder="Monto a cobrar al cliente">
 
 <button onclick="enviar()">Enviar pedido por WhatsApp</button>
 
@@ -151,11 +166,19 @@ margin:10px;
 <script>
 
 function calcular(){
+var zona=document.getElementById("zona").value;
+document.getElementById("precio").innerHTML="Precio: $"+zona;
+}
 
-var zona=document.getElementById("zona");
-var precio=zona.value;
+function mostrarCampo(){
 
-document.getElementById("precio").innerHTML="Precio: $"+precio;
+var servicio=document.getElementById("servicio").value;
+
+if(servicio=="cobro"){
+document.getElementById("cobro").style.display="block";
+}else{
+document.getElementById("cobro").style.display="none";
+}
 
 }
 
@@ -170,6 +193,7 @@ var telefono=document.getElementById("telefono").value;
 var recoger=document.getElementById("recoger").value;
 var entregar=document.getElementById("entregar").value;
 var pedido=document.getElementById("pedido").value;
+var importe=document.getElementById("importe").value;
 var cobro=document.getElementById("cobro").value;
 
 var mensaje="Hola EnRuta, deseo un domicilio%0A%0A"+
@@ -181,6 +205,7 @@ var mensaje="Hola EnRuta, deseo un domicilio%0A%0A"+
 "Recoger en: "+recoger+"%0A"+
 "Entregar en: "+entregar+"%0A"+
 "Paquete: "+pedido+"%0A"+
+"Importe del viaje: "+importe+"%0A"+
 "Monto a cobrar: "+cobro;
 
 window.open("https://wa.me/56746691?text="+mensaje);
@@ -190,4 +215,4 @@ window.open("https://wa.me/56746691?text="+mensaje);
 </script>
 
 </body>
-                                  </html>
+  </html>
