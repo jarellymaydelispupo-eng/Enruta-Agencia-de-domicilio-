@@ -109,7 +109,6 @@ function enviar(){
     let numPedido = (parseInt(localStorage.getItem('contador')) || 0) + 1;
     localStorage.setItem('contador', numPedido);
 
-    // Lógica financiera: Agencia base + $500 adicionales extraídos del mensajero
     let agenciaBase = (total >= 10000) ? 2000 : 50;
     let agenciaFinal = agenciaBase + 500;
     let mensajeroFinal = total - agenciaFinal;
@@ -132,7 +131,7 @@ function enviar(){
     pedidos.push(nuevoPedido);
     localStorage.setItem('pedidos', JSON.stringify(pedidos));
 
-    let msg = `*PEDIDO #${numPedido}*%0A*Nombre:* ${nuevoPedido.nombre}%0A*Zona:* ${nuevoPedido.zona}%0A*Total:* $${total.toLocaleString()}%0A*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})%0A*Entrega:* ${nuevoPedido.entregar}%0A*Detalle:* ${nuevoPedido.pedido}%0A---%0A*Agencia:* $${agenciaFinal}%0A*Mensajero:* $${mensajeroFinal.toLocaleString()}`;
+    let msg = `*PEDIDO #${numPedido}*%0A*Cliente:* ${nuevoPedido.nombre}%0A*Zona:* ${nuevoPedido.zona}%0A*Total:* $${total.toLocaleString()}%0A*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})%0A*Entrega:* ${nuevoPedido.entregar}%0A*Qué:* ${nuevoPedido.pedido}%0A---%0A*Agencia:* $${agenciaFinal}%0A*Mensajero:* $${mensajeroFinal.toLocaleString()}`;
     window.location.href = `https://wa.me/5356746691?text=${msg}`;
 }
 
@@ -155,5 +154,5 @@ function accederAdmin() {
 actualizarZonas();
 </script>
 </body>
-            </html>
+        </html>
             
