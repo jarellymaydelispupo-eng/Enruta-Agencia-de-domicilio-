@@ -3,29 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EnRuta Delivery | Servicio Profesional</title>
+    <title>EnRuta Delivery | Selección de Servicio</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-        
-        body { font-family: 'Poppins', sans-serif; margin:0; background:#f4f7f6; padding: 20px; display:flex; justify-content:center; }
+        body { font-family: 'Poppins', sans-serif; background:#f4f7f6; padding: 20px; display:flex; justify-content:center; }
         .container { background:white; width:100%; max-width:450px; padding:30px; border-radius:25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        
         .header { text-align: center; margin-bottom: 25px; }
-        .header img { width: 120px; margin-bottom: 10px; }
-        .header h1 { font-size: 24px; color: #333; margin: 0; }
-        .header p { color: #888; font-size: 14px; }
-
-        .steps { display: flex; justify-content: space-around; margin-bottom: 25px; font-size: 12px; color: #666; }
-        
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { font-size: 13px; font-weight: 600; color: #555; margin-bottom: 5px; display: block; }
-        select, input, textarea { width:100%; padding:14px; border: 2px solid #eee; border-radius:12px; font-size:15px; transition: 0.3s; box-sizing: border-box; }
-        select:focus, input:focus { border-color: #1e90ff; outline: none; }
-        
+        .header img { width: 120px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { font-size: 13px; font-weight: 600; color: #555; display: block; margin-bottom: 5px; }
+        select, input, textarea { width:100%; padding:14px; border: 2px solid #eee; border-radius:12px; font-size:15px; box-sizing: border-box; }
         .precio-box { background: #e8f4ff; color: #1e90ff; padding: 15px; border-radius: 12px; text-align: center; font-size: 20px; font-weight: 700; margin: 20px 0; }
-        
-        button { background: linear-gradient(45deg, #1e90ff, #00c6ff); color:white; border:none; padding:18px; width:100%; font-size:17px; border-radius:12px; cursor:pointer; font-weight: 600; box-shadow: 0 5px 15px rgba(30,144,255,0.3); }
-        button:hover { transform: translateY(-2px); }
+        button { background: linear-gradient(45deg, #1e90ff, #00c6ff); color:white; border:none; padding:18px; width:100%; font-size:17px; border-radius:12px; cursor:pointer; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -33,14 +22,15 @@
 <div class="container">
     <div class="header">
         <img src="1772931732602.png" alt="Logo">
-        <h1>EnRuta Delivery</h1>
-        <p>Tu pedido, directo a tu puerta.</p>
+        <h2>EnRuta Delivery</h2>
     </div>
 
-    <div class="steps">
-        <span>📍 Ubica</span>
-        <span>📦 Detalla</span>
-        <span>🚀 Recibe</span>
+    <div class="form-group">
+        <label>Vehículo de transporte</label>
+        <select id="vehiculo" onchange="calcular()">
+            <option value="motorina">Motorina (Zonas Cercanas)</option>
+            <option value="carrito">Carrito Eléctrico (Viajes Largos)</option>
+        </select>
     </div>
 
     <div class="form-group">
@@ -48,17 +38,17 @@
         <select id="zona" onchange="calcular()">
             <option value="0">Seleccionar destino...</option>
             <option value="300">Centro del pueblo - $300</option>
+            <option value="350">La Caridad - $350</option>
             <option value="500">Lenin - $500</option>
-            </select>
+            <option value="12000">Minas - $12,000</option>
+            <option value="14000">Senado - $14,000</option>
+        </select>
     </div>
 
     <div class="precio-box" id="precio">Total: $0</div>
 
     <div class="form-group">
         <input type="text" id="nombre" placeholder="Nombre completo">
-    </div>
-    <div class="form-group">
-        <input type="tel" id="telefono" placeholder="WhatsApp / Teléfono">
     </div>
     <div class="form-group">
         <textarea id="pedido" placeholder="¿Qué vamos a enviar?" rows="2"></textarea>
@@ -70,6 +60,10 @@
 <script>
     function calcular(){
         let total = parseInt(document.getElementById("zona").value);
+        let vehiculo = document.getElementById("vehiculo").value;
+        
+        // Regla: Si elige Carrito y es zona larga, se aplica la lógica de precios largos
+        // El total ya viene del value del select
         document.getElementById("precio").innerHTML = "Total: $" + total.toLocaleString();
         return total;
     }
@@ -77,10 +71,17 @@
     function enviar(){
         let total = calcular();
         let zonaTxt = document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
-        let msg = `*NUEVO PEDIDO*%0A*Zona:* ${zonaTxt}%0A*Total:* $${total}%0A*Cliente:* ${document.getElementById("nombre").value}%0A*Tel:* ${document.getElementById("telefono").value}%0A*Detalles:* ${document.getElementById("pedido").value}`;
+        let vehiculo = document.getElementById("vehiculo").value;
+        
+        // Cálculo de comisiones según lo acordado
+        let agencia = (total >= 10000) ? 2000 : 50;
+        let mensajero = total - agencia;
+
+        let msg = `*NUEVO PEDIDO*%0A*Vehículo:* ${vehiculo.toUpperCase()}%0A*Zona:* ${zonaTxt}%0A*Total:* $${total.toLocaleString()}%0A*Ganancia Agencia:* $${agencia}%0A*Pago Mensajero:* $${mensajero}%0A*Cliente:* ${document.getElementById("nombre").value}%0A*Detalles:* ${document.getElementById("pedido").value}`;
+        
         window.open(`https://wa.me/5356746691?text=${msg}`, '_blank');
     }
 </script>
 </body>
-    </html>
-    
+                                                            </html>
+                                                            
