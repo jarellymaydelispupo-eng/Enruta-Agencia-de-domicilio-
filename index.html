@@ -1,118 +1,187 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EnRuta - Agencia de Domicilios</title>
+<title>EnRuta Delivery</title>
 
 <style>
 
 body{
-font-family: Arial, sans-serif;
-background:#f4f4f4;
-margin:0;
-padding:0;
+font-family: Arial;
+background:#f2f2f2;
 text-align:center;
-}
-
-header{
-background:#0a3d62;
-color:white;
-padding:20px;
-}
-
-.logo{
-width:200px;
-margin-top:10px;
 }
 
 .container{
 background:white;
-margin:20px;
 padding:20px;
+margin:20px;
 border-radius:10px;
-box-shadow:0px 0px 10px rgba(0,0,0,0.1);
+box-shadow:0 0 10px rgba(0,0,0,0.2);
 }
 
-input, textarea, select{
+.logo{
+width:150px;
+}
+
+input,select,textarea{
 width:90%;
 padding:10px;
-margin:10px;
-border-radius:5px;
+margin:8px;
+border-radius:6px;
 border:1px solid #ccc;
 }
 
 button{
-background:#27ae60;
+background:#25D366;
 color:white;
-padding:12px;
 border:none;
-border-radius:5px;
+padding:12px;
+width:90%;
 font-size:16px;
-cursor:pointer;
-width:95%;
+border-radius:8px;
 }
 
-button:hover{
-background:#219150;
+.precio{
+font-size:20px;
+color:red;
+margin:10px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<header>
-
-<img src="1772931732602.png" class="logo">
-
-<h1>EnRuta</h1>
-<p>Agencia de domicilios</p>
-
-</header>
-
 <div class="container">
 
-<h2>Solicitar domicilio</h2>
+<img src="logo.png" class="logo">
 
-<input type="text" id="nombre" placeholder="Tu nombre">
+<h2>EnRuta Delivery</h2>
 
-<input type="text" id="telefono" placeholder="Tu teléfono">
+<p>Solicita tu domicilio rápido</p>
 
-<textarea id="direccion" placeholder="Escribe tu dirección con todos los detalles (barrio, casa, color de la casa, referencias, etc)"></textarea>
+<select id="servicio">
+<option value="">Tipo de servicio</option>
+<option>Entrega de paquete</option>
+<option>Entrega con cobro</option>
+</select>
 
-<input type="text" id="pedido" placeholder="¿Qué deseas pedir?">
+<select id="zona" onchange="calcular()">
 
-<select id="zona">
+<option value="">Selecciona tu zona</option>
 
-<option value="Centro">Centro</option>
-<option value="Norte">Zona Norte</option>
-<option value="Sur">Zona Sur</option>
-<option value="Este">Zona Este</option>
-<option value="Oeste">Zona Oeste</option>
+<option value="450">Centro del pueblo - $450</option>
+<option value="650">Lenin - $650</option>
+<option value="550">Modelo - $550</option>
+<option value="500">La Caridad - $500</option>
+<option value="550">La Vigía - $550</option>
+<option value="550">Florat - $550</option>
+<option value="500">Vista Hermosa - $500</option>
+<option value="550">Versalles - $550</option>
+<option value="500">Agramonte - $500</option>
+<option value="650">Jayama - $650</option>
+<option value="550">Monte Carlos - $550</option>
+<option value="550">La Mosca - $550</option>
+<option value="550">Marquesado - $550</option>
+<option value="600">La Esperanza - $600</option>
+<option value="600">Nueva Esperanza - $600</option>
+<option value="550">Garrido - $550</option>
+<option value="600">El Micro - $600</option>
+<option value="550">Palomino - $550</option>
+<option value="550">Juanito - $550</option>
+<option value="500">Previsora - $500</option>
+<option value="600">La Guernina - $600</option>
+<option value="600">La Belén - $600</option>
+<option value="500">Casino Campestre - $500</option>
+<option value="500">Las Mercedes - $500</option>
+<option value="500">Simoni - $500</option>
+<option value="550">Montejo - $550</option>
+<option value="600">La Yaba - $600</option>
+<option value="600">Nadales - $600</option>
+<option value="550">Bella Vista - $550</option>
+<option value="600">Vista Bella - $600</option>
+<option value="550">Inra - $550</option>
+<option value="600">Imán - $600</option>
+<option value="550">Mascota - $550</option>
+<option value="550">Puerto Príncipe - $550</option>
+<option value="650">Isabel Hortensia - $650</option>
+<option value="550">Villa Mariana - $550</option>
+<option value="600">Los Coquitos - $600</option>
+<option value="600">La Zambrana - $600</option>
+<option value="650">Saratoga - $650</option>
+<option value="550">El Jardín - $550</option>
+<option value="500">Floiran Quiroz - $500</option>
+<option value="500">Porvenir - $500</option>
+<option value="600">Nitrógeno - $600</option>
+<option value="550">Buenos Aires - $550</option>
+<option value="550">Camino de la Matanza - $550</option>
+<option value="500">Sanchez Soto - $500</option>
+
+<option value="12000">Minas - $12000</option>
+<option value="14000">Senado - $14000</option>
+<option value="14000">Florida - $14000</option>
+<option value="12000">Jimaguayu - $12000</option>
+<option value="14000">Sibanicu - $14000</option>
+<option value="14000">Najasa - $14000</option>
+<option value="12000">Vertientes - $12000</option>
+<option value="16000">Lugareño - $16000</option>
 
 </select>
 
-<button onclick="enviarPedido()">Enviar pedido por WhatsApp</button>
+<div class="precio" id="precio">Precio: $0</div>
+
+<input type="text" id="nombre" placeholder="Nombre">
+
+<input type="text" id="telefono" placeholder="Teléfono">
+
+<input type="text" id="recoger" placeholder="Dirección de recogida">
+
+<input type="text" id="entregar" placeholder="Dirección de entrega">
+
+<textarea id="pedido" placeholder="Qué se va a enviar"></textarea>
+
+<input type="text" id="cobro" placeholder="Monto a cobrar (solo si es entrega con cobro)">
+
+<button onclick="enviar()">Enviar pedido por WhatsApp</button>
 
 </div>
 
 <script>
 
-function enviarPedido(){
+function calcular(){
+
+var zona=document.getElementById("zona");
+var precio=zona.value;
+
+document.getElementById("precio").innerHTML="Precio: $"+precio;
+
+}
+
+function enviar(){
+
+var servicio=document.getElementById("servicio").value;
+var zona=document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
+var precio=document.getElementById("zona").value;
 
 var nombre=document.getElementById("nombre").value;
 var telefono=document.getElementById("telefono").value;
-var direccion=document.getElementById("direccion").value;
+var recoger=document.getElementById("recoger").value;
+var entregar=document.getElementById("entregar").value;
 var pedido=document.getElementById("pedido").value;
-var zona=document.getElementById("zona").value;
+var cobro=document.getElementById("cobro").value;
 
-var mensaje="Nuevo pedido%0A%0A"+
+var mensaje="Hola EnRuta, deseo un domicilio%0A%0A"+
+"Servicio: "+servicio+"%0A"+
+"Zona: "+zona+"%0A"+
+"Precio domicilio: $"+precio+"%0A%0A"+
 "Nombre: "+nombre+"%0A"+
 "Teléfono: "+telefono+"%0A"+
-"Dirección: "+direccion+"%0A"+
-"Pedido: "+pedido+"%0A"+
-"Zona: "+zona;
+"Recoger en: "+recoger+"%0A"+
+"Entregar en: "+entregar+"%0A"+
+"Paquete: "+pedido+"%0A"+
+"Monto a cobrar: "+cobro;
 
 window.open("https://wa.me/56746691?text="+mensaje);
 
@@ -121,4 +190,4 @@ window.open("https://wa.me/56746691?text="+mensaje);
 </script>
 
 </body>
-  </html>
+                                  </html>
