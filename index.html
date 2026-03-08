@@ -2,58 +2,59 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Enruta - Agencia de Domicilios</title>
+<title>EnRuta - Agencia de Domicilios</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#f4f6f8;
-text-align:center;
+background:#0fa3b1;
 padding:20px;
-}
-
-.logo{
-width:200px;
-margin-bottom:10px;
+text-align:center;
 }
 
 .container{
 background:white;
-padding:20px;
-border-radius:10px;
 max-width:420px;
 margin:auto;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+padding:20px;
+border-radius:15px;
+}
+
+.logo{
+width:180px;
+margin-bottom:10px;
 }
 
 select,input{
-width:90%;
-padding:10px;
-margin:6px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-button{
-background:#1a73e8;
-color:white;
-border:none;
-padding:12px;
 width:95%;
-border-radius:6px;
-margin-top:10px;
+padding:12px;
+margin:6px;
+border-radius:8px;
+border:1px solid #ccc;
 font-size:16px;
 }
 
-.resultado{
-margin-top:15px;
-font-size:18px;
+.precio{
+font-size:22px;
+color:red;
+margin:10px;
 }
 
-.lista{
-margin-top:20px;
-text-align:left;
+.detalles{
+font-size:16px;
+margin:5px;
+}
+
+button{
+background:#25D366;
+color:white;
+border:none;
+padding:14px;
+width:95%;
+border-radius:10px;
+font-size:18px;
+margin-top:10px;
 }
 
 </style>
@@ -61,140 +62,127 @@ text-align:left;
 
 <body>
 
-<img src="1772931732602.png" class="logo">
-
-<h1>Enruta</h1>
-<h3>Agencia de Mensajería</h3>
-
 <div class="container">
 
-<h3>Nuevo domicilio</h3>
+<img src="1772931732602.png" class="logo">
 
-<select id="vehiculo" onchange="ponerPrecio()">
+<h2>EnRuta</h2>
+<p>Agencia de domicilios</p>
 
-<option value="">Tipo de envío</option>
+<select id="zona" onchange="calcular()">
 
-<option value="motorina">Motorina</option>
+<option value="">Selecciona zona</option>
 
-<option value="carrito">Carrito</option>
-
-<option value="viaje">Viaje largo</option>
+<option value="Centro del pueblo|350|320">Centro del pueblo - $350</option>
+<option value="Lenin|550|420">Lenin - $550</option>
+<option value="Modelo|450|380">Modelo - $450</option>
+<option value="La Caridad|400|350">La Caridad - $400</option>
+<option value="La Vigía|450|380">La Vigía - $450</option>
+<option value="Florat|450|380">Florat - $450</option>
+<option value="Vista Hermosa|400|350">Vista Hermosa - $400</option>
+<option value="Versalles|450|380">Versalles - $450</option>
+<option value="Agramonte|400|350">Agramonte - $400</option>
+<option value="Jayama|550|420">Jayama - $550</option>
+<option value="Monte Carlos|450|380">Monte Carlos - $450</option>
+<option value="La Mosca|450|380">La Mosca - $450</option>
+<option value="Marquesado|450|380">Marquesado - $450</option>
+<option value="La Esperanza|500|420">La Esperanza - $500</option>
+<option value="Nueva Esperanza|500|420">Nueva Esperanza - $500</option>
+<option value="Garrido|450|380">Garrido - $450</option>
+<option value="El Micro|500|420">El Micro - $500</option>
+<option value="Palomino|400|350">Palomino - $400</option>
+<option value="Juanito|450|380">Juanito - $450</option>
+<option value="Previsora|400|350">Previsora - $400</option>
+<option value="La Guernina|500|420">La Guernina - $500</option>
+<option value="La Belén|500|420">La Belén - $500</option>
+<option value="Casino Campestre|400|350">Casino Campestre - $400</option>
+<option value="Las Mercedes|400|350">Las Mercedes - $400</option>
+<option value="Simoni|400|350">Simoni - $400</option>
+<option value="Montejo|450|380">Montejo - $450</option>
+<option value="La Yaba|500|420">La Yaba - $500</option>
+<option value="Nadales|500|420">Nadales - $500</option>
+<option value="Bella Vista|450|380">Bella Vista - $450</option>
+<option value="Vista Bella|500|420">Vista Bella - $500</option>
+<option value="Inra|450|380">Inra - $450</option>
+<option value="Imán|500|420">Imán - $500</option>
+<option value="Mascota|450|380">Mascota - $450</option>
+<option value="Puerto Príncipe|450|380">Puerto Príncipe - $450</option>
+<option value="Isabel Hortensia|550|420">Isabel Hortensia - $550</option>
+<option value="Villa Mariana|450|380">Villa Mariana - $450</option>
+<option value="Los Coquitos|500|420">Los Coquitos - $500</option>
+<option value="La Zambrana|500|420">La Zambrana - $500</option>
+<option value="Saratoga|550|420">Saratoga - $550</option>
+<option value="El Jardín|450|380">El Jardín - $450</option>
+<option value="Floiran Quiroz|400|350">Floiran Quiroz - $400</option>
+<option value="Porvenir|400|350">Porvenir - $400</option>
+<option value="Nitrógeno|500|420">Nitrógeno - $500</option>
+<option value="Buenos Aires|450|380">Buenos Aires - $450</option>
+<option value="Camino de la Matanza|450|380">Camino de la Matanza - $450</option>
+<option value="Sanchez Soto|400|350">Sanchez Soto - $400</option>
 
 </select>
 
-<input id="cliente" placeholder="Cobro al cliente">
+<div class="precio" id="precio">Precio del viaje: $0</div>
 
-<input id="mensajero" placeholder="Pago al mensajero">
+<div class="detalles" id="mensajero"></div>
+<div class="detalles" id="ganancia"></div>
 
-<button onclick="calcular()">Calcular ganancia</button>
+<input id="nombre" placeholder="Nombre">
 
-<div class="resultado" id="resultado"></div>
+<input id="telefono" placeholder="Teléfono">
 
-<button onclick="guardar()">Guardar domicilio</button>
+<input id="direccion" placeholder="Dirección de recogida">
 
-<button onclick="enviar()">Enviar por WhatsApp</button>
+<input id="entrega" placeholder="Dirección de entrega">
 
-<div class="lista">
+<input id="pedido" placeholder="Qué se va a enviar">
 
-<h3>Domicilios del día</h3>
-
-<div id="lista"></div>
-
-</div>
+<button onclick="enviar()">Enviar pedido por WhatsApp</button>
 
 </div>
 
 <script>
 
-let contador=0;
-
-function ponerPrecio(){
-
-let tipo=document.getElementById("vehiculo").value;
-
-if(tipo=="motorina"){
-
-document.getElementById("cliente").value=250;
-document.getElementById("mensajero").value=200;
-
-}
-
-if(tipo=="carrito"){
-
-document.getElementById("cliente").value=350;
-document.getElementById("mensajero").value=280;
-
-}
-
-if(tipo=="viaje"){
-
-document.getElementById("cliente").value=500;
-document.getElementById("mensajero").value=400;
-
-}
-
-}
-
 function calcular(){
 
-let cliente=Number(document.getElementById("cliente").value);
-let mensajero=Number(document.getElementById("mensajero").value);
+let datos=document.getElementById("zona").value.split("|");
+
+let zona=datos[0];
+let cliente=parseInt(datos[1]);
+let mensajero=parseInt(datos[2]);
 
 let ganancia=cliente-mensajero;
 
-document.getElementById("resultado").innerHTML=
+document.getElementById("precio").innerHTML="Precio del viaje: $"+cliente;
 
-"Cobro al cliente: $"+cliente+
+document.getElementById("mensajero").innerHTML="Pago al mensajero: $"+mensajero;
 
-"<br>Pago al mensajero: $"+mensajero+
-
-"<br><b>Ganancia tuya: $"+ganancia+"</b>";
-
-}
-
-function guardar(){
-
-contador++;
-
-let cliente=document.getElementById("cliente").value;
-let mensajero=document.getElementById("mensajero").value;
-let tipo=document.getElementById("vehiculo").value;
-
-let ganancia=cliente-mensajero;
-
-let texto=
-
-"Domicilio #"+contador+
-
-" | "+tipo+
-
-" | Cliente $"+cliente+
-
-" | Mensajero $"+mensajero+
-
-" | Ganancia $"+ganancia;
-
-document.getElementById("lista").innerHTML+="<p>"+texto+"</p>";
+document.getElementById("ganancia").innerHTML="Ganancia EnRuta: $"+ganancia;
 
 }
 
 function enviar(){
 
-let cliente=document.getElementById("cliente").value;
-let mensajero=document.getElementById("mensajero").value;
-let tipo=document.getElementById("vehiculo").value;
+let zona=document.getElementById("zona").value.split("|")[0];
+let precio=document.getElementById("precio").innerText;
+let nombre=document.getElementById("nombre").value;
+let telefono=document.getElementById("telefono").value;
+let direccion=document.getElementById("direccion").value;
+let entrega=document.getElementById("entrega").value;
+let pedido=document.getElementById("pedido").value;
 
-let mensaje=
+let mensaje="🚚 DOMICILIO ENRUTA\n\n"+
+"Zona: "+zona+"\n"+
+precio+"\n\n"+
+"Nombre: "+nombre+"\n"+
+"Teléfono: "+telefono+"\n"+
+"Recoger en: "+direccion+"\n"+
+"Entregar en: "+entrega+"\n"+
+"Paquete: "+pedido;
 
-"Domicilio Enruta%0A"+
+let url="https://wa.me/?text="+encodeURIComponent(mensaje);
 
-"Tipo: "+tipo+"%0A"+
-
-"Cobro al cliente: $"+cliente+"%0A"+
-
-"Pago al mensajero: $"+mensajero;
-
-window.open("https://wa.me/?text="+mensaje);
+window.open(url);
 
 }
 
