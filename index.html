@@ -1,55 +1,105 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Pedidos EnRuta</title>
-<style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnRuta - Pedido</title><style>
+
 body{
-font-family: Arial;
-background:#f5f5f5;
-padding:20px;
-}.container{
-background:white;
-padding:20px;
-border-radius:10px;
-max-width:500px;
-margin:auto;
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#00b894,#0984e3);
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-input,button{
+.container{
+background:white;
+padding:30px;
+border-radius:12px;
+width:90%;
+max-width:500px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.logo{
+text-align:center;
+margin-bottom:15px;
+}
+
+.logo img{
+width:120px;
+}
+
+h2{
+text-align:center;
+margin-top:0;
+color:#333;
+}
+
+input,select{
 width:100%;
-padding:10px;
-margin:5px 0;
-border-radius:5px;
-border:1px solid #ccc;
+padding:12px;
+margin:6px 0;
+border-radius:6px;
+border:1px solid #ddd;
+font-size:14px;
 }
 
 button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:8px;
 background:#00b894;
 color:white;
 font-size:16px;
+font-weight:bold;
+margin-top:10px;
+cursor:pointer;
 }
 
-</style>
-</head><body><div class="container"><h2>Nuevo Pedido EnRuta</h2><input id="cliente" placeholder="Nombre del cliente">
-<input id="telefono" placeholder="Teléfono">
-<input id="zona" placeholder="Zona"><input id="recoger" placeholder="Dirección de recogida">
-<input id="entregar" placeholder="Dirección de entrega"><input id="paquete" placeholder="Tipo de paquete"><input id="precioCliente" placeholder="Precio cliente">
-<input id="pagoMensajero" placeholder="Pago mensajero"><button onclick="enviar()">Registrar Pedido</button>
+button:hover{
+background:#019875;
+}
 
-</div><script>
+.footer{
+text-align:center;
+font-size:12px;
+color:#888;
+margin-top:15px;
+}
+
+</style></head><body><div class="container"><div class="logo">
+<img src="logo.png">
+</div><h2>Solicitar envío</h2><input id="cliente" placeholder="Nombre del cliente">
+<input id="telefono" placeholder="Teléfono"><input id="recoger" placeholder="Dirección de recogida">
+<input id="entregar" placeholder="Dirección de entrega"><select id="transporte">
+<option value="">Tipo de transporte</option>
+<option>Moto</option>
+<option>Bicicleta</option>
+<option>Carro</option>
+<option>Camión</option>
+</select><input id="paquete" placeholder="Tipo de paquete"><button onclick="enviar()">Solicitar Pedido</button>
+
+<div class="footer">
+EnRuta mensajería
+</div></div><script>
 
 function enviar(){
 
 let data={
 cliente:document.getElementById("cliente").value,
 telefono:document.getElementById("telefono").value,
-zona:document.getElementById("zona").value,
 recoger:document.getElementById("recoger").value,
 entregar:document.getElementById("entregar").value,
+transporte:document.getElementById("transporte").value,
 paquete:document.getElementById("paquete").value,
-precioCliente:document.getElementById("precioCliente").value,
-pagoMensajero:document.getElementById("pagoMensajero").value,
-ganancia:document.getElementById("precioCliente").value - document.getElementById("pagoMensajero").value
+
+precioCliente:"",
+pagoMensajero:"",
+ganancia:""
 };
 
 fetch("https://script.google.com/macros/s/AKfycbzhGvtN0k8_3RhEEn-nrabG8Nfq3Egc8z8R_SkbAug0pG4HK3D2veF3MIjzG9GnxFjHCg/exec",{
@@ -58,10 +108,10 @@ body:JSON.stringify(data)
 })
 .then(res=>res.text())
 .then(res=>{
-alert("Pedido registrado");
+alert("Pedido enviado 🚚");
 });
 
 }
 
 </script></body>
-</html>
+  </html>
