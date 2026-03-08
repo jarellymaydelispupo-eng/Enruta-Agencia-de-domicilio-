@@ -1,187 +1,119 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="UTF-8">
-<title>EnRuta Delivery</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+    <meta charset="UTF-8">
+    <title>EnRuta Delivery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family:Arial, sans-serif; margin:0; background:linear-gradient(135deg,#1e90ff,#00c6ff); min-height:100vh; display:flex; align-items:center; justify-content:center; padding: 20px; }
+        .container { background:white; width:95%; max-width:500px; padding:25px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.25); text-align:center; }
+        .logo { width:180px; margin-bottom:10px; }
+        select, input, textarea { width:100%; padding:12px; margin-top:10px; border-radius:8px; border:1px solid #ccc; box-sizing: border-box; }
+        button { background:#25D366; color:white; border:none; padding:15px; width:100%; margin-top:15px; font-size:17px; border-radius:10px; cursor:pointer; font-weight: bold; }
+        .precio { font-size:24px; color:#ff3b3b; margin-top:15px; font-weight:bold; }
+    </style>
+</head>
+<body>
 
-body{
-font-family:Arial;
-margin:0;
-background:linear-gradient(135deg,#1e90ff,#00c6ff);
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-}
+<div class="container">
+    <img src="1772931732602.png" class="logo">
+    <h2>EnRuta Delivery</h2>
 
-.container{
-background:white;
-width:95%;
-max-width:500px;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.25);
-text-align:center;
-animation:fade 0.8s ease;
-}
+    <select id="zona" onchange="calcular()">
+        <option value="0">-- Selecciona tu destino --</option>
+        <optgroup label="Zonas Cercanas (Motorina)">
+            <option value="300">Centro del pueblo - $300</option>
+            <option value="350">La Caridad - $350</option>
+            <option value="350">Vista Hermosa - $350</option>
+            <option value="350">Agramonte - $350</option>
+            <option value="350">Previsora - $350</option>
+            <option value="350">Casino Campestre - $350</option>
+            <option value="350">Las Mercedes - $350</option>
+            <option value="350">Simoni - $350</option>
+            <option value="350">Floiran Quiroz - $350</option>
+            <option value="350">Porvenir - $350</option>
+            <option value="350">Sanchez Soto - $350</option>
+            <option value="400">Modelo - $400</option>
+            <option value="400">La Vigía - $400</option>
+            <option value="400">Florat - $400</option>
+            <option value="400">Versalles - $400</option>
+            <option value="400">Monte Carlos - $400</option>
+            <option value="400">La Mosca - $400</option>
+            <option value="400">Marquesado - $400</option>
+            <option value="400">Garrido - $400</option>
+            <option value="400">Palomino - $400</option>
+            <option value="400">Juanito - $400</option>
+            <option value="400">Montejo - $400</option>
+            <option value="400">Bella Vista - $400</option>
+            <option value="400">Inra - $400</option>
+            <option value="400">Mascota - $400</option>
+            <option value="400">Puerto Príncipe - $400</option>
+            <option value="400">Villa Mariana - $400</option>
+            <option value="400">El Jardín - $400</option>
+            <option value="400">Buenos Aires - $400</option>
+            <option value="400">Camino de la Matanza - $400</option>
+            <option value="450">La Esperanza - $450</option>
+            <option value="450">Nueva Esperanza - $450</option>
+            <option value="450">El Micro - $450</option>
+            <option value="450">La Guernina - $450</option>
+            <option value="450">La Belén - $450</option>
+            <option value="450">La Yaba - $450</option>
+            <option value="450">Nadales - $450</option>
+            <option value="450">Vista Bella - $450</option>
+            <option value="450">Imán - $450</option>
+            <option value="450">Los Coquitos - $450</option>
+            <option value="450">La Zambrana - $450</option>
+            <option value="450">Nitrógeno - $450</option>
+            <option value="500">Lenin - $500</option>
+            <option value="500">Jayama - $500</option>
+            <option value="500">Isabel Hortensia - $500</option>
+            <option value="500">Saratoga - $500</option>
+        </optgroup>
+        <optgroup label="Viajes Largos (Carrito)">
+            <option value="12000">Minas - $12,000</option>
+            <option value="12000">Jimaguayu - $12,000</option>
+            <option value="12000">Vertientes - $12,000</option>
+            <option value="14000">Senado - $14,000</option>
+            <option value="14000">Florida - $14,000</option>
+            <option value="14000">Sibanicu - $14,000</option>
+            <option value="14000">Najasa - $14,000</option>
+            <option value="16000">Lugareño - $16,000</option>
+        </optgroup>
+    </select>
 
-@keyframes fade{
-from{opacity:0; transform:translateY(20px);}
-to{opacity:1; transform:translateY(0);}
-}
+    <div class="precio" id="precio">Total: $0</div>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <textarea id="pedido" placeholder="¿Qué llevamos?"></textarea>
+    
+    <button onclick="enviar()">Enviar pedido por WhatsApp</button>
+</div>
 
-.logo{
-width:190px;
-margin-bottom:10px;
-}
-
-h2{
-margin:5px;
-color:#333;
-}
-
-p{
-color:#666;
-margin-bottom:20px;
-}
-
-input,select,textarea{
-width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:8px;
-border:1px solid #ccc;
-font-size:14px;
-}
-
-textarea{
-resize:none;
-}
-
-button{
-background:#25D366;
-color:white;
-border:none;
-padding:15px;
-width:100%;
-margin-top:15px;
-font-size:17px;
-border-radius:10px;
-cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-background:#1ebe5d;
-transform:scale(1.03);
-}
-
-.precio{
-font-size:22px;
-color:#ff3b3b;
-margin-top:10px;
-font-weight:bold;
-}
-
-.oculto{
-display:none;
-}
-
-</style></head><body><div class="container"><img src="1772931732602.png" class="logo"><h2>EnRuta Delivery</h2>
-<p>Solicita tu domicilio rápido</p><select id="servicio" onchange="mostrarCampo()">
-<option value="">Tipo de servicio</option>
-<option value="paquete">Entrega de paquete</option>
-<option value="cobro">Entrega con cobro</option>
-</select><select id="zona" onchange="calcular()"><option value="">Selecciona tu zona</option><option value="450">Centro del pueblo - $450</option>
-<option value="650">Lenin - $650</option>
-<option value="550">Modelo - $550</option>
-<option value="500">La Caridad - $500</option>
-<option value="550">La Vigía - $550</option>
-<option value="550">Florat - $550</option>
-<option value="500">Vista Hermosa - $500</option>
-<option value="550">Versalles - $550</option>
-<option value="500">Agramonte - $500</option>
-<option value="650">Jayama - $650</option><option value="550">Monte Carlos - $550</option>
-<option value="550">La Mosca - $550</option>
-<option value="550">Marquesado - $550</option>
-<option value="600">La Esperanza - $600</option>
-<option value="600">Nueva Esperanza - $600</option>
-<option value="550">Garrido - $550</option>
-<option value="600">El Micro - $600</option>
-<option value="550">Palomino - $550</option><option value="12000">Minas - $12000</option>
-<option value="14000">Senado - $14000</option>
-<option value="14000">Florida - $14000</option>
-<option value="12000">Jimaguayu - $12000</option>
-<option value="14000">Sibanicu - $14000</option>
-<option value="14000">Najasa - $14000</option>
-<option value="12000">Vertientes - $12000</option>
-<option value="16000">Lugareño - $16000</option></select><div class="precio" id="precio">Precio: $0</div><input type="text" id="nombre" placeholder="Nombre">
-<input type="text" id="telefono" placeholder="Teléfono"><input type="text" id="recoger" placeholder="Dirección de recogida">
-<input type="text" id="entregar" placeholder="Dirección de entrega"><textarea id="pedido" placeholder="Qué se va a enviar"></textarea><input type="text" id="importe" placeholder="Importe del viaje"><input type="text" id="cobro" class="oculto" placeholder="Monto a cobrar al cliente"><button onclick="enviar()">Enviar pedido por WhatsApp</button>
-
-</div><script>
-
+<script>
 function calcular(){
-var zona=document.getElementById("zona").value;
-document.getElementById("precio").innerHTML="Precio: $"+zona;
-}
-
-function mostrarCampo(){
-var servicio=document.getElementById("servicio").value;
-
-if(servicio=="cobro"){
-document.getElementById("cobro").style.display="block";
-}else{
-document.getElementById("cobro").style.display="none";
-}
+    let total = parseInt(document.getElementById("zona").value);
+    document.getElementById("precio").innerHTML = "Total: $" + total.toLocaleString();
+    return total;
 }
 
 function enviar(){
+    let total = calcular();
+    let zonaTxt = document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
+    
+    // Lógica de comisiones: 2000 para agencia en viajes largos, 50 en locales
+    let agencia = (total >= 10000) ? 2000 : 50;
+    let mensajero = total - agencia;
 
-var servicio=document.getElementById("servicio").value;
-var zona=document.getElementById("zona").value;
-var nombre=document.getElementById("nombre").value;
-var telefono=document.getElementById("telefono").value;
-var recoger=document.getElementById("recoger").value;
-var entregar=document.getElementById("entregar").value;
-var pedido=document.getElementById("pedido").value;
-var importe=document.getElementById("importe").value;
-var cobro=document.getElementById("cobro").value;
+    let msg = `*NUEVO PEDIDO ENRUTA*%0A` +
+              `*Zona:* ${zonaTxt}%0A` +
+              `*Total:* $${total.toLocaleString()}%0A` +
+              `*Ganancia Agencia:* $${agencia.toLocaleString()}%0A` +
+              `*Pago Mensajero:* $${mensajero.toLocaleString()}%0A` +
+              `*Cliente:* ${document.getElementById("nombre").value}%0A` +
+              `*Pedido:* ${document.getElementById("pedido").value}`;
 
-var mensaje="🚚 *Nuevo pedido EnRuta* %0A%0A"+
-"👤 Cliente: "+nombre+"%0A"+
-"📞 Teléfono: "+telefono+"%0A"+
-"📦 Servicio: "+servicio+"%0A"+
-"📍 Zona: "+zona+"%0A"+
-"📤 Recoger: "+recoger+"%0A"+
-"📥 Entregar: "+entregar+"%0A"+
-"📦 Pedido: "+pedido+"%0A"+
-"💰 Precio viaje: $"+zona+"%0A"+
-"💵 Importe: "+importe+"%0A"+
-"💲 Cobro cliente: "+cobro;
-
-fetch("https://script.google.com/macros/s/AKfycbzhGvtN0k8_3RhEEn-nrabG8Nfq3Egc8z8R_SkbAug0pG4HK3D2veF3MIjzG9GnxFjHCg/exec",{
-
-method:"POST",
-
-body:JSON.stringify({
-cliente:nombre,
-telefono:telefono,
-zona:zona,
-recoger:recoger,
-entregar:entregar,
-paquete:pedido,
-precioCliente:zona,
-pagoMensajero:"",
-ganancia:"",
-servicio:servicio,
-cobro:cobro
-})
-
-})
-
-window.open("https://wa.me/5356746691?text="+mensaje);
-
+    window.open(`https://wa.me/5356746691?text=${msg}`, '_blank');
 }
-
-</script></body>
-  </html>
+</script>
+</body>
+              </html>
+  
