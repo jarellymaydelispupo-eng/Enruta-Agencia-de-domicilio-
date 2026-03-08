@@ -1,300 +1,67 @@
-<!DOCTYPE html>
-<html lang="es">
-
+<!DOCTYPE html><html>
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>EnRuta</title>
-
+<title>Pedidos EnRuta</title>
 <style>
-
-*{
-box-sizing:border-box;
-}
-
 body{
-font-family:Arial;
-background:#0fa3b1;
-margin:0;
-height:100vh;
-}
-
-.container{
-width:100%;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.card{
-background:white;
-width:100%;
-height:100%;
-max-width:520px;
+font-family: Arial;
+background:#f5f5f5;
 padding:20px;
-border-radius:0;
-text-align:center;
-overflow:auto;
+}.container{
+background:white;
+padding:20px;
+border-radius:10px;
+max-width:500px;
+margin:auto;
 }
 
-.logo{
-width:300px;
-margin-bottom:10px;
-}
-
-select,input{
+input,button{
 width:100%;
-padding:14px;
-margin:7px 0;
-border-radius:8px;
+padding:10px;
+margin:5px 0;
+border-radius:5px;
 border:1px solid #ccc;
-font-size:16px;
-}
-
-.precio{
-font-size:26px;
-color:red;
-margin:10px;
 }
 
 button{
-background:#25D366;
+background:#00b894;
 color:white;
-border:none;
-padding:16px;
-width:100%;
-border-radius:10px;
-font-size:18px;
-margin-top:10px;
-}
-
-.admin{
-font-size:12px;
-color:#ccc;
-margin-top:10px;
-cursor:pointer;
+font-size:16px;
 }
 
 </style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="card">
-
-<img src="1772931732602.png" class="logo">
-
-<h2>EnRuta</h2>
-<p>Agencia de domicilios</p>
-
-<select id="vehiculo" onchange="cargarZonas()">
-
-<option value="">Tipo de servicio</option>
-<option value="motorina">🏍 Motorina</option>
-<option value="carrito">🛺 Carrito eléctrico</option>
-
-</select>
-
-<select id="zona" onchange="calcular()">
-<option>Selecciona zona</option>
-</select>
-
-<div class="precio" id="precio">Precio del viaje: $0</div>
-
-<input id="nombre" placeholder="Nombre">
+</head><body><div class="container"><h2>Nuevo Pedido EnRuta</h2><input id="cliente" placeholder="Nombre del cliente">
 <input id="telefono" placeholder="Teléfono">
-<input id="direccion" placeholder="Recoger en">
-<input id="entrega" placeholder="Entregar en">
-<input id="pedido" placeholder="Qué se envía">
+<input id="zona" placeholder="Zona"><input id="recoger" placeholder="Dirección de recogida">
+<input id="entregar" placeholder="Dirección de entrega"><input id="paquete" placeholder="Tipo de paquete"><input id="precioCliente" placeholder="Precio cliente">
+<input id="pagoMensajero" placeholder="Pago mensajero"><button onclick="enviar()">Registrar Pedido</button>
 
-<button onclick="enviar()">Enviar pedido por WhatsApp</button>
-
-<div class="admin" onclick="abrirAdmin()">admin</div>
-
-</div>
-</div>
-
-<script>
-
-let numeroWhatsApp="5356746691"
-
-let zonasMotorina = {
-
-"Centro del pueblo":[350,320],
-"Lenin":[550,420],
-"Modelo":[450,380],
-"La Caridad":[400,350],
-"La Vigía":[450,380],
-"Florat":[450,380],
-"Vista Hermosa":[400,350],
-"Versalles":[450,380],
-"Agramonte":[400,350],
-"Jayama":[550,420],
-"Monte Carlos":[450,380],
-"La Mosca":[450,380],
-"Marquesado":[450,380],
-"La Esperanza":[500,420],
-"Nueva Esperanza":[500,420],
-"Garrido":[450,380],
-"El Micro":[500,420],
-"Palomino":[400,350],
-"Juanito":[450,380],
-"Previsora":[400,350],
-"La Guernina":[500,420],
-"La Belén":[500,420],
-"Casino Campestre":[400,350],
-"Las Mercedes":[400,350],
-"Simoni":[400,350],
-"Montejo":[450,380],
-"La Yaba":[500,420],
-"Nadales":[500,420],
-"Bella Vista":[450,380],
-"Vista Bella":[500,420],
-"Inra":[450,380],
-"Imán":[500,420],
-"Mascota":[450,380],
-"Puerto Príncipe":[450,380],
-"Isabel Hortensia":[550,420],
-"Villa Mariana":[450,380],
-"Los Coquitos":[500,420],
-"La Zambrana":[500,420],
-"Saratoga":[550,420],
-"El Jardín":[450,380],
-"Floiran Quiroz":[400,350],
-"Porvenir":[400,350],
-"Nitrógeno":[500,420],
-"Buenos Aires":[450,380],
-"Camino de la Matanza":[450,380],
-"Sanchez Soto":[400,350],
-
-"Florida":[5000,4000],
-"Vertientes":[4000,3000],
-"Jimaguayú":[5000,4000],
-"Senado":[6000,5000]
-
-}
-
-let zonasCarrito = {
-
-"Minas":[11000,10000],
-"Senado":[13000,12000],
-"Florida":[13000,12000],
-"Jimaguayú":[11000,10000],
-"Sibanicú":[13000,12000],
-"Najasa":[13000,12000],
-"Vertientes":[11000,10000],
-"Lugareño":[15000,14000]
-
-}
-
-function cargarZonas(){
-
-let tipo=document.getElementById("vehiculo").value
-let zonaSelect=document.getElementById("zona")
-
-zonaSelect.innerHTML="<option>Selecciona zona</option>"
-
-let zonas = tipo=="motorina" ? zonasMotorina : zonasCarrito
-
-for(let zona in zonas){
-
-let precio=zonas[zona][0]
-
-zonaSelect.innerHTML+=`<option value="${zona}">${zona} - $${precio}</option>`
-
-}
-
-}
-
-function calcular(){
-
-let tipo=document.getElementById("vehiculo").value
-let zona=document.getElementById("zona").value
-
-let zonas = tipo=="motorina" ? zonasMotorina : zonasCarrito
-
-let cliente=zonas[zona][0]
-
-document.getElementById("precio").innerHTML="Precio del viaje: $"+cliente
-
-}
+</div><script>
 
 function enviar(){
 
-let tipo=document.getElementById("vehiculo").value
-let zona=document.getElementById("zona").value
+let data={
+cliente:document.getElementById("cliente").value,
+telefono:document.getElementById("telefono").value,
+zona:document.getElementById("zona").value,
+recoger:document.getElementById("recoger").value,
+entregar:document.getElementById("entregar").value,
+paquete:document.getElementById("paquete").value,
+precioCliente:document.getElementById("precioCliente").value,
+pagoMensajero:document.getElementById("pagoMensajero").value,
+ganancia:document.getElementById("precioCliente").value - document.getElementById("pagoMensajero").value
+};
 
-let zonas = tipo=="motorina" ? zonasMotorina : zonasCarrito
-
-let cliente=zonas[zona][0]
-let mensajero=zonas[zona][1]
-let ganancia=cliente-mensajero
-
-let nombre=document.getElementById("nombre").value
-let telefono=document.getElementById("telefono").value
-let direccion=document.getElementById("direccion").value
-let entrega=document.getElementById("entrega").value
-let pedido=document.getElementById("pedido").value
-
-let fecha = new Date().toLocaleDateString()
-
-let pedidoData={
-fecha:fecha,
-cliente:nombre,
-telefono:telefono,
-zona:zona,
-precioCliente:cliente,
-pagoMensajero:mensajero,
-ganancia:ganancia,
-recoger:direccion,
-entregar:entrega,
-paquete:pedido
-}
-
-let pedidos=JSON.parse(localStorage.getItem("pedidosEnRuta"))||[]
-
-pedidos.push(pedidoData)
-
-localStorage.setItem("pedidosEnRuta",JSON.stringify(pedidos))
-
-let mensaje="🚚 DOMICILIO ENRUTA\n\n"+
-"Servicio: "+tipo+"\n"+
-"Zona: "+zona+"\n\n"+
-"Cliente: "+nombre+"\n"+
-"Teléfono: "+telefono+"\n"+
-"Recoger: "+direccion+"\n"+
-"Entregar: "+entrega+"\n"+
-"Paquete: "+pedido
-
-let url="https://wa.me/"+numeroWhatsApp+"?text="+encodeURIComponent(mensaje)
-
-window.open(url)
+fetch("https://script.google.com/macros/s/AKfycbzhGvtN0k8_3RhEEn-nrabG8Nfq3Egc8z8R_SkbAug0pG4HK3D2veF3MIjzG9GnxFjHCg/exec",{
+method:"POST",
+body:JSON.stringify(data)
+})
+.then(res=>res.text())
+.then(res=>{
+alert("Pedido registrado");
+});
 
 }
 
-function abrirAdmin(){
-
-let pass=prompt("Contraseña admin")
-
-if(pass==="061021041122"){
-
-window.location.href="admin.html"
-
-}else{
-
-alert("Contraseña incorrecta")
-
-}
-
-}
-
-</script>
-
-</body>
+</script></body>
 </html>
