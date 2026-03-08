@@ -22,17 +22,14 @@ height:100vh;
 }
 
 .container{
-
 width:100%;
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-
 }
 
 .card{
-
 background:white;
 width:100%;
 height:100%;
@@ -41,37 +38,29 @@ padding:20px;
 border-radius:0;
 text-align:center;
 overflow:auto;
-
 }
 
 .logo{
-
 width:300px;
 margin-bottom:10px;
-
 }
 
 select,input{
-
 width:100%;
 padding:14px;
 margin:7px 0;
 border-radius:8px;
 border:1px solid #ccc;
 font-size:16px;
-
 }
 
 .precio{
-
 font-size:26px;
 color:red;
 margin:10px;
-
 }
 
 button{
-
 background:#25D366;
 color:white;
 border:none;
@@ -80,7 +69,6 @@ width:100%;
 border-radius:10px;
 font-size:18px;
 margin-top:10px;
-
 }
 
 </style>
@@ -101,17 +89,13 @@ margin-top:10px;
 <select id="vehiculo" onchange="cargarZonas()">
 
 <option value="">Tipo de servicio</option>
-
 <option value="motorina">🏍 Motorina</option>
-
 <option value="carrito">🛺 Carrito eléctrico</option>
 
 </select>
 
 <select id="zona" onchange="calcular()">
-
 <option>Selecciona zona</option>
-
 </select>
 
 <div class="precio" id="precio">Precio del viaje: $0</div>
@@ -120,19 +104,14 @@ margin-top:10px;
 <div id="ganancia"></div>
 
 <input id="nombre" placeholder="Nombre">
-
 <input id="telefono" placeholder="Teléfono">
-
 <input id="direccion" placeholder="Recoger en">
-
 <input id="entrega" placeholder="Entregar en">
-
 <input id="pedido" placeholder="Qué se envía">
 
 <button onclick="enviar()">Enviar pedido por WhatsApp</button>
 
 </div>
-
 </div>
 
 <script>
@@ -186,7 +165,14 @@ let zonasMotorina = {
 "Nitrógeno":[500,420],
 "Buenos Aires":[450,380],
 "Camino de la Matanza":[450,380],
-"Sanchez Soto":[400,350]
+"Sanchez Soto":[400,350],
+
+"--- VIAJES INTERMUNICIPALES ---":[0,0],
+
+"Florida":[5000,4000],
+"Vertientes":[4000,3000],
+"Jimaguayú":[5000,4000],
+"Senado":[6000,5000]
 
 }
 
@@ -216,7 +202,15 @@ for(let zona in zonas){
 
 let precio=zonas[zona][0]
 
+if(precio==0){
+
+zonaSelect.innerHTML+=`<option disabled>----- VIAJES INTERMUNICIPALES -----</option>`
+
+}else{
+
 zonaSelect.innerHTML+=`<option value="${zona}">${zona} - $${precio}</option>`
+
+}
 
 }
 
