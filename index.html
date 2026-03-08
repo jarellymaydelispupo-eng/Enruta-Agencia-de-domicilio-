@@ -2,77 +2,70 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Hola EnRuta - Pedir Mensajero</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EnRuta Delivery</title>
 
 <style>
 
 body{
 font-family: Arial;
+background: linear-gradient(135deg,#00b4db,#0083b0);
 margin:0;
-background: linear-gradient(135deg,#ff4d6d,#ff758f);
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
+padding:20px;
 }
 
 .container{
 background:white;
-padding:30px;
-border-radius:15px;
-width:90%;
 max-width:500px;
-box-shadow:0 10px 30px rgba(0,0,0,0.2);
+margin:auto;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
 
 h1{
 text-align:center;
-color:#ff4d6d;
+margin:10px 0;
+}
+
+.sub{
+text-align:center;
+color:#666;
+margin-bottom:20px;
 }
 
 img{
-width:120px;
 display:block;
 margin:auto;
-border-radius:50%;
+width:120px;
 }
 
-label{
-font-weight:bold;
-margin-top:10px;
-display:block;
-}
-
-input,select{
+select,input,textarea{
 width:100%;
-padding:10px;
-margin-top:5px;
-border-radius:8px;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
 border:1px solid #ccc;
+font-size:16px;
+}
+
+.precio{
+text-align:center;
+font-size:22px;
+color:red;
+font-weight:bold;
+margin:15px 0;
 }
 
 button{
 width:100%;
 padding:15px;
-background:#ff4d6d;
-color:white;
+background:#25D366;
 border:none;
-border-radius:10px;
-font-size:16px;
-margin-top:20px;
-cursor:pointer;
-}
-
-button:hover{
-background:#ff2f58;
-}
-
-.precio{
-text-align:center;
-margin-top:10px;
+border-radius:12px;
 font-size:18px;
-font-weight:bold;
-color:#333;
+color:white;
+margin-top:15px;
 }
 
 </style>
@@ -84,94 +77,96 @@ color:#333;
 
 <img src="https://cdn-icons-png.flaticon.com/512/3202/3202926.png">
 
-<h1>Hola EnRuta</h1>
+<h1>EnRuta Delivery</h1>
+<div class="sub">Solicita tu domicilio rápido</div>
 
-<label>Nombre</label>
-<input type="text" id="nombre">
-
-<label>Dirección de recogida</label>
-<input type="text" id="recogida">
-
-<label>Dirección de entrega</label>
-<input type="text" id="entrega">
-
-<label>Tipo de servicio</label>
-<select id="servicio" onchange="mostrarCobro()">
-<option value="llevar">Llevar algo</option>
-<option value="cobrar">Entrega + Cobro</option>
+<select id="servicio" onchange="actualizar()">
+<option value="normal">Entrega simple</option>
+<option value="cobro">Entrega con cobro</option>
 </select>
 
-<div id="campoCobro" style="display:none;">
-
-<label>Monto a cobrar al cliente</label>
-<input type="number" id="cobro">
-
-</div>
-
-<label>Importe del viaje</label>
-<input type="number" id="importe">
+<select id="zona" onchange="actualizar()">
+<option value="450">Centro - $450</option>
+<option value="500">Florat - $500</option>
+<option value="550" selected>Garrido - $550</option>
+<option value="600">La Belén - $600</option>
+</select>
 
 <div class="precio" id="precio">
-Precio del servicio: 250 CUP
+Precio: $550
 </div>
 
-<button onclick="pedir()">Pedir Mensajero</button>
+<input type="text" id="nombre" placeholder="Nombre">
+
+<input type="text" id="telefono" placeholder="Teléfono">
+
+<input type="text" id="recogida" placeholder="Dirección de recogida">
+
+<input type="text" id="entrega" placeholder="Dirección de entrega">
+
+<textarea id="producto" placeholder="Qué se va a enviar"></textarea>
+
+<div id="cobroCampo">
+<input type="number" id="cobro" placeholder="Monto a cobrar al cliente">
+</div>
+
+<button onclick="enviar()">Enviar pedido por WhatsApp</button>
 
 </div>
 
 <script>
 
-function mostrarCobro(){
+function actualizar(){
 
+let precio=document.getElementById("zona").value
 let servicio=document.getElementById("servicio").value
-let campo=document.getElementById("campoCobro")
-let precio=document.getElementById("precio")
 
-if(servicio=="cobrar"){
+document.getElementById("precio").innerHTML="Precio: $"+precio
 
-campo.style.display="block"
-precio.innerHTML="Precio del servicio: 350 CUP"
-
-}else{
-
-campo.style.display="none"
-precio.innerHTML="Precio del servicio: 250 CUP"
-
+if(servicio=="cobro"){
+document.getElementById("cobroCampo").style.display="block"
+}
+else{
+document.getElementById("cobroCampo").style.display="none"
 }
 
 }
 
-function pedir(){
+function enviar(){
 
 let nombre=document.getElementById("nombre").value
+let telefono=document.getElementById("telefono").value
 let recogida=document.getElementById("recogida").value
 let entrega=document.getElementById("entrega").value
+let producto=document.getElementById("producto").value
+let zona=document.getElementById("zona")
+let precio=zona.value
+let zonaTexto=zona.options[zona.selectedIndex].text
 let servicio=document.getElementById("servicio").value
 let cobro=document.getElementById("cobro").value
-let importe=document.getElementById("importe").value
 
 let texto="Hola EnRuta deseo un domicilio%0A%0A"
 
 texto+="Nombre: "+nombre+"%0A"
+texto+="Teléfono: "+telefono+"%0A"
+texto+="Zona: "+zonaTexto+"%0A"
 texto+="Recoger en: "+recogida+"%0A"
 texto+="Entregar en: "+entrega+"%0A"
+texto+="Producto: "+producto+"%0A"
 
-if(servicio=="llevar"){
-texto+="Servicio: Llevar algo%0A"
+texto+="Importe del viaje: $"+precio+"%0A"
+
+if(servicio=="cobro"){
+texto+="Monto a cobrar al cliente: $"+cobro+"%0A"
 }
 
-if(servicio=="cobrar"){
-texto+="Servicio: Entrega + Cobro%0A"
-texto+="Monto a cobrar al cliente: "+cobro+" CUP%0A"
-}
-
-texto+="Importe del viaje: "+importe+" CUP"
-
-window.open("https://wa.me/5350000000?text="+texto)
+window.open("https://wa.me/5356746691?text="+texto)
 
 }
+
+actualizar()
 
 </script>
 
 </body>
-</html>
+  </html>
