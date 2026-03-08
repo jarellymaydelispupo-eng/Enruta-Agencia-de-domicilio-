@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 <meta charset="UTF-8">
 <title>EnRuta Delivery</title>
@@ -16,7 +17,12 @@ header{
 background:#ff6600;
 color:white;
 text-align:center;
-padding:30px;
+padding:20px;
+}
+
+.logo{
+width:200px;
+margin-bottom:10px;
 }
 
 nav{
@@ -27,31 +33,64 @@ text-align:center;
 
 nav a{
 color:white;
-margin:15px;
+margin:10px;
 text-decoration:none;
-font-weight:bold;
 }
 
 section{
-padding:40px;
+padding:20px;
 text-align:center;
+}
+
+input, textarea{
+width:80%;
+padding:10px;
+margin:5px;
 }
 
 button{
 background:#ff6600;
 color:white;
 border:none;
-padding:15px 25px;
-font-size:18px;
+padding:12px 20px;
+margin:10px;
 border-radius:5px;
-cursor:pointer;
+font-size:16px;
+}
+
+table{
+width:90%;
+margin:auto;
+border-collapse:collapse;
+background:white;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+}
+
+th{
+background:#ff6600;
+color:white;
+}
+
+#listaPedidos{
+margin-top:20px;
+}
+
+.pedido{
+background:white;
+padding:15px;
+margin:10px;
+border-radius:10px;
 }
 
 footer{
-background:#111;
+background:black;
 color:white;
-padding:20px;
 text-align:center;
+padding:15px;
 }
 
 </style>
@@ -60,86 +99,188 @@ text-align:center;
 <body>
 
 <header>
-<h1>EnRuta Delivery 🚚</h1>
+
+<img src="logo.png" class="logo">
+
+<h1>EnRuta Delivery 🛵</h1>
+
 <p>Tu envío ya va en camino</p>
+
 </header>
 
 <nav>
 
-<a href="#pedido">Pedir envío</a>
-<a href="#servicios">Servicios</a>
-<a href="#precios">Precios</a>
-<a href="#repartidor">Ser repartidor</a>
-<a href="#contacto">Contacto</a>
+<a href="#">Pedir envío</a>
+<a href="#">Servicios</a>
+<a href="#">Precios</a>
+<a href="#">Contacto</a>
 
 </nav>
 
-<section id="pedido">
+<section>
 
 <h2>Pedir un domicilio</h2>
 
-<form>
+<input id="nombre" placeholder="Nombre"><br>
 
-<input placeholder="Nombre"><br><br>
-<input placeholder="Teléfono"><br><br>
-<input placeholder="Dirección de recogida"><br><br>
-<input placeholder="Dirección de entrega"><br><br>
-<input placeholder="Monto a cobrar"><br><br>
+<input id="telefono" placeholder="Teléfono"><br>
 
-<button>Solicitar envío</button>
+<input id="recogida" placeholder="Dirección de recogida"><br>
 
-</form>
+<input id="entrega" placeholder="Dirección de entrega"><br>
+
+<input id="monto" placeholder="Monto a cobrar"><br>
+
+<textarea id="detalles" placeholder="Describe con lujo de detalles qué se va a recoger o entregar"></textarea>
+
+<br>
+
+<button onclick="enviarPedido()">Solicitar envío</button>
 
 </section>
 
-<section id="servicios">
+<section>
 
 <h2>Servicios</h2>
 
-<p>🚚 Envío de paquetes</p>
+<p>📦 Envío de paquetes</p>
+
 <p>💰 Entrega + Cobro</p>
+
 <p>🛒 Mandados</p>
-<p>⚡ Envíos urgentes</p>
+
+<p>⚡ Envíos urgentes (+$200)</p>
 
 </section>
 
-<section id="precios">
+<section>
 
-<h2>Precios de Domicilios</h2>
+<h2>Precios</h2>
 
-<p>Centro del pueblo: $400</p>
-<p>Versalles: $500</p>
-<p>Garrido: $500</p>
-<p>Jayama: $600</p>
-<p>La Esperanza: $550</p>
+<table>
+
+<tr>
+<th>Zona</th>
+<th>Precio</th>
+</tr>
+
+<tr><td>Centro del pueblo</td><td>$450</td></tr>
+<tr><td>Lenin</td><td>$650</td></tr>
+<tr><td>Modelo</td><td>$550</td></tr>
+<tr><td>La Caridad</td><td>$500</td></tr>
+<tr><td>La Vigía</td><td>$550</td></tr>
+<tr><td>Versalles</td><td>$550</td></tr>
+<tr><td>Jayama</td><td>$650</td></tr>
+<tr><td>La Esperanza</td><td>$600</td></tr>
+<tr><td>Garrido</td><td>$550</td></tr>
+
+</table>
 
 </section>
 
-<section id="repartidor">
+<section>
 
-<h2>Trabaja con nosotros</h2>
+<h2>Pedidos en curso</h2>
 
-<p>¿Tienes moto o bicicleta?</p>
-
-<button>Registrarse</button>
+<div id="listaPedidos"></div>
 
 </section>
 
-<section id="contacto">
+<section>
 
 <h2>Contacto</h2>
 
-<p>Pide tu domicilio por WhatsApp</p>
+<a href="https://wa.me/5356746691" target="_blank">
 
 <button>WhatsApp</button>
+
+</a>
 
 </section>
 
 <footer>
 
-<p>© 2026 EnRuta Delivery</p>
+© 2026 EnRuta Delivery
 
 </footer>
+
+<script>
+
+let pedidos = [];
+
+function enviarPedido(){
+
+let nombre = document.getElementById("nombre").value;
+
+let telefono = document.getElementById("telefono").value;
+
+let recogida = document.getElementById("recogida").value;
+
+let entrega = document.getElementById("entrega").value;
+
+let monto = document.getElementById("monto").value;
+
+let detalles = document.getElementById("detalles").value;
+
+let pedido = {nombre,telefono,recogida,entrega,monto,detalles};
+
+pedidos.push(pedido);
+
+mostrarPedidos();
+
+let mensaje = "Nuevo pedido EnRuta:%0A"+
+"Nombre: "+nombre+"%0A"+
+"Teléfono: "+telefono+"%0A"+
+"Recoger: "+recogida+"%0A"+
+"Entregar: "+entrega+"%0A"+
+"Monto: "+monto+"%0A"+
+"Detalles: "+detalles;
+
+window.open("https://wa.me/5356746691?text="+mensaje);
+
+}
+
+function mostrarPedidos(){
+
+let lista = document.getElementById("listaPedidos");
+
+lista.innerHTML="";
+
+pedidos.forEach((p,i)=>{
+
+lista.innerHTML += `
+<div class="pedido">
+
+<b>${p.nombre}</b><br>
+
+📞 ${p.telefono}<br>
+
+📍 Recoger: ${p.recogida}<br>
+
+🏠 Entregar: ${p.entrega}<br>
+
+💰 $${p.monto}<br>
+
+📦 Detalles: ${p.detalles}<br><br>
+
+<button onclick="entregado(${i})">Entregado</button>
+
+</div>
+`;
+
+});
+
+}
+
+function entregado(i){
+
+pedidos.splice(i,1);
+
+mostrarPedidos();
+
+}
+
+</script>
 
 </body>
   </html>
