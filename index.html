@@ -112,7 +112,6 @@ function enviar(){
     let zonaTxt = document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
     let vehiculo = document.getElementById("vehiculo").value;
 
-    // Lógica financiera correcta
     let agencia = 50;
     if (vehiculo === "carrito") { agencia = 2000; }
     else if (zonaTxt.includes("Florida") || zonaTxt.includes("Vertientes") || zonaTxt.includes("Jimaguayu")) { agencia = 500; }
@@ -137,7 +136,7 @@ function enviar(){
     pedidos.push(nuevoPedido);
     localStorage.setItem('pedidos', JSON.stringify(pedidos));
 
-    let texto = `*PEDIDO #${numPedido}*\n*Cliente:* ${nuevoPedido.nombre}\n*Zona:* ${nuevoPedido.zona}\n*Total:* $${total.toLocaleString()}\n*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})\n*Entrega:* ${nuevoPedido.entregar}\n*Qué:* ${nuevoPedido.pedido}\n---\n*Agencia:* $${agencia}\n*Mensajero:* $${mensajero.toLocaleString()}`;
+    let texto = `*PEDIDO #${numPedido}*\n*Cliente:* ${nuevoPedido.nombre}\n*Zona:* ${nuevoPedido.zona}\n*Total:* $${total.toLocaleString()}\n*Recogida:* ${nuevoPedido.recoger} (${nuevoPedido.hora})\n*Entrega:* ${nuevoPedido.entregar}\n*Qué:* ${nuevoPedido.pedido}`;
     
     window.open("https://wa.me/5356746691?text=" + encodeURIComponent(texto), '_blank');
 }
@@ -161,4 +160,5 @@ function accederAdmin() {
 actualizarZonas();
 </script>
 </body>
-</html>
+    </html>
+            
