@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<title>Admin EnRuta</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#111;
+color:white;
+padding:20px;
+}
+
+.pedido{
+background:#222;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Panel Admin EnRuta</h2>
+
+<div id="lista"></div>
+
+<script>
+
+let pedidos = JSON.parse(localStorage.getItem("pedidosEnRuta")) || []
+
+let html=""
+
+pedidos.forEach((p,i)=>{
+
+html+=`
+
+<div class="pedido">
+
+<b>Pedido #${i+1}</b><br>
+Fecha: ${p.fecha}<br>
+Cliente: ${p.cliente}<br>
+Teléfono: ${p.telefono}<br>
+Zona: ${p.zona}<br>
+
+Precio cliente: $${p.precioCliente}<br>
+Pago mensajero: $${p.pagoMensajero}<br>
+Ganancia agencia: $${p.ganancia}<br>
+
+Recoger: ${p.recoger}<br>
+Entregar: ${p.entregar}<br>
+Paquete: ${p.paquete}
+
+</div>
+
+`
+
+})
+
+document.getElementById("lista").innerHTML=html
+
+</script>
+
+</body>
+
+</html>
