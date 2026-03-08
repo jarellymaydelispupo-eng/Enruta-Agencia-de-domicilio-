@@ -24,9 +24,10 @@ box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
 
 .logo{
-width:150px;
+width:220px;
 display:block;
 margin:auto;
+margin-bottom:10px;
 }
 
 h1{
@@ -67,6 +68,13 @@ color:white;
 margin-top:15px;
 }
 
+.aviso{
+font-size:14px;
+color:#e60000;
+margin-top:10px;
+text-align:center;
+}
+
 </style>
 </head>
 
@@ -74,68 +82,31 @@ margin-top:15px;
 
 <div class="container">
 
-<img src="logo.png" class="logo">
+<img class="logo" src="https://i.imgur.com/7Q6FQyF.jpeg">
 
-<h1>EnRuta Delivery</h1>
-<div class="sub">Solicita tu domicilio rápido</div>
+<h1>EnRuta</h1>
+<div class="sub">Agencia de domicilios</div>
 
-<select id="transporte" onchange="actualizar()">
+<select id="transporte" onchange="cambiarZonas()">
 <option value="motorina">🛵 Motorina</option>
 <option value="carrito">🚗 Carrito eléctrico</option>
 </select>
 
-<select id="servicio" onchange="actualizar()">
-<option value="simple">Entrega simple</option>
-<option value="cobro">Entrega con cobro</option>
-</select>
+<select id="zona" onchange="actualizarPrecio()"></select>
 
-<select id="zona" onchange="actualizar()">
+<div class="precio" id="precio"></div>
 
-<option value="450">Centro del pueblo</option>
-<option value="650">Lenin</option>
-<option value="550">Modelo</option>
-<option value="500">La Caridad</option>
-<option value="550">La Vigía</option>
-<option value="550">Florat</option>
-<option value="500">Vista Hermosa</option>
-<option value="550">Versalles</option>
-<option value="500">Agramonte</option>
-<option value="650">Jayama</option>
-<option value="550">Monte Carlos</option>
-<option value="550">La Mosca</option>
-<option value="550">Marquesado</option>
-<option value="600">La Esperanza</option>
-<option value="600">Nueva Esperanza</option>
-<option value="550">Garrido</option>
-<option value="600">El Micro</option>
-
-<option disabled>──── VIAJES LARGOS ────</option>
-
-<option value="12000">Minas</option>
-<option value="14000">Senado</option>
-<option value="14000">Florida</option>
-<option value="12000">Jimaguayu</option>
-<option value="14000">Sibanicu</option>
-<option value="14000">Najasa</option>
-<option value="12000">Vertientes</option>
-<option value="16000">Lugareño</option>
-
-</select>
-
-<div class="precio" id="precio">
-Precio: $450
-</div>
+<div class="aviso" id="avisoMotorina"></div>
 
 <input type="text" id="nombre" placeholder="Nombre">
+
 <input type="text" id="telefono" placeholder="Teléfono">
+
 <input type="text" id="recogida" placeholder="Dirección de recogida">
+
 <input type="text" id="entrega" placeholder="Dirección de entrega">
 
 <textarea id="producto" placeholder="Qué se va a enviar"></textarea>
-
-<div id="cobroCampo" style="display:none;">
-<input type="number" id="cobro" placeholder="Monto a cobrar al cliente">
-</div>
 
 <button onclick="enviar()">Enviar pedido por WhatsApp</button>
 
@@ -143,29 +114,111 @@ Precio: $450
 
 <script>
 
-function actualizar(){
+let zonasMotorina=[
 
-let base=parseInt(document.getElementById("zona").value)
+["Centro del pueblo",350,320],
+["Lenin",550,420],
+["Modelo",450,380],
+["La Caridad",400,350],
+["La Vigía",450,380],
+["Florat",450,380],
+["Vista Hermosa",400,350],
+["Versalles",450,380],
+["Agramonte",400,350],
+["Jayama",550,420],
+
+["Florida",5500,4000],
+["Senado",5500,4000],
+["Vertientes",5000,4000],
+["Jimaguayú",5000,4000]
+
+]
+
+let zonasCarrito=[
+
+["Centro del pueblo",450,350],
+["Lenin",650,450],
+["Modelo",550,400],
+["La Caridad",500,380],
+["La Vigía",550,400],
+["Florat",550,400],
+["Vista Hermosa",500,380],
+["Versalles",550,400],
+["Agramonte",500,380],
+["Jayama",650,450]
+
+]
+
+function cambiarZonas(){
+
 let transporte=document.getElementById("transporte").value
-let servicio=document.getElementById("servicio").value
+let select=document.getElementById("zona")
+select.innerHTML=""
 
-let precio=base
+let lista= transporte=="motorina"?zonasMotorina:zonasCarrito
 
-if(transporte=="carrito"){
-precio=base+100
-}
+lista.forEach(z=>{
 
-document.getElementById("precio").innerHTML="Precio: $"+precio
+let op=document.createElement("option")
+op.value=z[1]
+op.dataset.mensajero=z[2]
+op.text=z[0]+" - $"+z[1]
 
-if(servicio=="cobro"){
-document.getElementById("cobroCampo").style.display="block"
+select.appendChild(op)
+
+})
+
+if(transporte=="motorina"){
+document.getElementById("avisoMotorina").innerHTML="🛵 Motorina disponible de 9:00 AM a 5:00 PM. Viajes largos: Florida, Senado, Vertientes y Jimaguayú."
 }else{
-document.getElementById("cobroCampo").style.display="none"
+document.getElementById("avisoMotorina").innerHTML=""
 }
+
+actualizarPrecio()
+
+}
+
+function actualizarPrecio(){
+
+let precio=document.getElementById("zona").value
+document.getElementById("precio").innerHTML="Precio del viaje: $"+precio
+
+}
+
+function obtenerNumeroPedido(){
+
+let hoy=new Date().toDateString()
+
+let fechaGuardada=localStorage.getItem("fechaPedidos")
+let contador=localStorage.getItem("contadorPedidos")
+
+if(fechaGuardada!=hoy){
+
+contador=1
+localStorage.setItem("fechaPedidos",hoy)
+
+}else{
+
+contador=parseInt(contador)+1
+
+}
+
+localStorage.setItem("contadorPedidos",contador)
+
+return contador
 
 }
 
 function enviar(){
+
+let numero=obtenerNumeroPedido()
+
+let zonaSelect=document.getElementById("zona")
+let zona=zonaSelect.options[zonaSelect.selectedIndex].text
+let precio=zonaSelect.value
+let pagoMensajero=zonaSelect.options[zonaSelect.selectedIndex].dataset.mensajero
+
+let ganancia=precio-pagoMensajero
 
 let transporte=document.getElementById("transporte").value
 let nombre=document.getElementById("nombre").value
@@ -173,39 +226,26 @@ let telefono=document.getElementById("telefono").value
 let recogida=document.getElementById("recogida").value
 let entrega=document.getElementById("entrega").value
 let producto=document.getElementById("producto").value
-let zona=document.getElementById("zona")
-let base=parseInt(zona.value)
 
-let precio=base
-
-if(transporte=="carrito"){
-precio=base+100
-}
-
-let zonaTexto=zona.options[zona.selectedIndex].text
-let servicio=document.getElementById("servicio").value
-let cobro=document.getElementById("cobro").value
-
-let texto="Hola EnRuta deseo un domicilio%0A%0A"
+let texto="🚚 DOMICILIO #"+numero+"%0A%0A"
 
 texto+="Transporte: "+transporte+"%0A"
+texto+="Zona: "+zona+"%0A"
+texto+="Precio al cliente: $"+precio+"%0A"
+texto+="Pago al mensajero: $"+pagoMensajero+"%0A"
+texto+="Ganancia agencia: $"+ganancia+"%0A%0A"
+
 texto+="Nombre: "+nombre+"%0A"
 texto+="Teléfono: "+telefono+"%0A"
-texto+="Zona: "+zonaTexto+"%0A"
 texto+="Recoger en: "+recogida+"%0A"
 texto+="Entregar en: "+entrega+"%0A"
-texto+="Producto: "+producto+"%0A"
-texto+="Importe del viaje: $"+precio+"%0A"
-
-if(servicio=="cobro"){
-texto+="Monto a cobrar al cliente: $"+cobro+"%0A"
-}
+texto+="Producto: "+producto
 
 window.open("https://wa.me/5356746691?text="+texto)
 
 }
 
-actualizar()
+cambiarZonas()
 
 </script>
 
