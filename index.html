@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EnRuta Delivery | Selección de Servicio</title>
+    <title>EnRuta Delivery</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
         body { font-family: 'Poppins', sans-serif; background:#f4f7f6; padding: 20px; display:flex; justify-content:center; }
@@ -26,62 +26,121 @@
     </div>
 
     <div class="form-group">
-        <label>Vehículo de transporte</label>
+        <label>Vehículo</label>
         <select id="vehiculo" onchange="calcular()">
-            <option value="motorina">Motorina (Zonas Cercanas)</option>
-            <option value="carrito">Carrito Eléctrico (Viajes Largos)</option>
+            <option value="motorina">Motorina (Zonas locales)</option>
+            <option value="carrito">Carrito Eléctrico (Viajes largos)</option>
         </select>
     </div>
 
     <div class="form-group">
-        <label>¿A dónde vamos?</label>
+        <label>Zona de entrega</label>
         <select id="zona" onchange="calcular()">
             <option value="0">Seleccionar destino...</option>
-            <option value="300">Centro del pueblo - $300</option>
-            <option value="350">La Caridad - $350</option>
-            <option value="500">Lenin - $500</option>
-            <option value="12000">Minas - $12,000</option>
-            <option value="14000">Senado - $14,000</option>
+            <optgroup label="Motorina (Local)">
+                <option value="300">Centro del pueblo - $300</option>
+                <option value="350">La Caridad - $350</option>
+                <option value="400">Modelo - $400</option>
+                <option value="400">La Vigía - $400</option>
+                <option value="400">Florat - $400</option>
+                <option value="350">Vista Hermosa - $350</option>
+                <option value="400">Versalles - $400</option>
+                <option value="350">Agramonte - $350</option>
+                <option value="500">Jayama - $500</option>
+                <option value="400">Monte Carlos - $400</option>
+                <option value="400">La Mosca - $400</option>
+                <option value="400">Marquesado - $400</option>
+                <option value="450">La Esperanza - $450</option>
+                <option value="450">Nueva Esperanza - $450</option>
+                <option value="400">Garrido - $400</option>
+                <option value="450">El Micro - $450</option>
+                <option value="400">Palomino - $400</option>
+                <option value="400">Juanito - $400</option>
+                <option value="350">Previsora - $350</option>
+                <option value="450">La Guernina - $450</option>
+                <option value="450">La Belén - $450</option>
+                <option value="350">Casino Campestre - $350</option>
+                <option value="350">Las Mercedes - $350</option>
+                <option value="350">Simoni - $350</option>
+                <option value="400">Montejo - $400</option>
+                <option value="450">La Yaba - $450</option>
+                <option value="450">Nadales - $450</option>
+                <option value="400">Bella Vista - $400</option>
+                <option value="450">Vista Bella - $450</option>
+                <option value="400">Inra - $400</option>
+                <option value="450">Imán - $450</option>
+                <option value="400">Mascota - $400</option>
+                <option value="400">Puerto Príncipe - $400</option>
+                <option value="500">Isabel Hortensia - $500</option>
+                <option value="400">Villa Mariana - $400</option>
+                <option value="450">Los Coquitos - $450</option>
+                <option value="450">La Zambrana - $450</option>
+                <option value="500">Saratoga - $500</option>
+                <option value="400">El Jardín - $400</option>
+                <option value="350">Floiran Quiroz - $350</option>
+                <option value="350">Porvenir - $350</option>
+                <option value="450">Nitrógeno - $450</option>
+                <option value="400">Buenos Aires - $400</option>
+                <option value="400">Camino de la Matanza - $400</option>
+                <option value="350">Sanchez Soto - $350</option>
+            </optgroup>
+            <optgroup label="Carrito (Viajes Largos)">
+                <option value="10000">Minas - $10,000</option>
+                <option value="12000">Senado - $12,000</option>
+                <option value="12000">Florida - $12,000</option>
+                <option value="10000">Jimaguayu - $10,000</option>
+                <option value="12000">Sibanicu - $12,000</option>
+                <option value="12000">Najasa - $12,000</option>
+                <option value="10000">Vertientes - $10,000</option>
+                <option value="14000">Lugareño - $14,000</option>
+            </optgroup>
         </select>
     </div>
-
-    <div class="precio-box" id="precio">Total: $0</div>
 
     <div class="form-group">
         <input type="text" id="nombre" placeholder="Nombre completo">
     </div>
     <div class="form-group">
+        <input type="text" id="recoger" placeholder="Dirección de recogida">
+    </div>
+    <div class="form-group">
+        <input type="text" id="entregar" placeholder="Dirección de entrega">
+    </div>
+    <div class="form-group">
         <textarea id="pedido" placeholder="¿Qué vamos a enviar?" rows="2"></textarea>
     </div>
+
+    <div class="precio-box" id="precio">Total: $0</div>
 
     <button onclick="enviar()">Solicitar Envío</button>
 </div>
 
 <script>
     function calcular(){
-        let total = parseInt(document.getElementById("zona").value);
-        let vehiculo = document.getElementById("vehiculo").value;
-        
-        // Regla: Si elige Carrito y es zona larga, se aplica la lógica de precios largos
-        // El total ya viene del value del select
-        document.getElementById("precio").innerHTML = "Total: $" + total.toLocaleString();
-        return total;
+        let valor = parseInt(document.getElementById("zona").value);
+        document.getElementById("precio").innerHTML = "Total: $" + valor.toLocaleString();
+        return valor;
     }
 
     function enviar(){
         let total = calcular();
         let zonaTxt = document.getElementById("zona").options[document.getElementById("zona").selectedIndex].text;
-        let vehiculo = document.getElementById("vehiculo").value;
         
-        // Cálculo de comisiones según lo acordado
         let agencia = (total >= 10000) ? 2000 : 50;
         let mensajero = total - agencia;
 
-        let msg = `*NUEVO PEDIDO*%0A*Vehículo:* ${vehiculo.toUpperCase()}%0A*Zona:* ${zonaTxt}%0A*Total:* $${total.toLocaleString()}%0A*Ganancia Agencia:* $${agencia}%0A*Pago Mensajero:* $${mensajero}%0A*Cliente:* ${document.getElementById("nombre").value}%0A*Detalles:* ${document.getElementById("pedido").value}`;
+        let msg = `*NUEVO PEDIDO ENRUTA*%0A` +
+                  `*Vehículo:* ${document.getElementById("vehiculo").value.toUpperCase()}%0A` +
+                  `*Zona:* ${zonaTxt}%0A` +
+                  `*Recogida:* ${document.getElementById("recoger").value}%0A` +
+                  `*Entrega:* ${document.getElementById("entregar").value}%0A` +
+                  `*Total:* $${total.toLocaleString()}%0A` +
+                  `---%0A*Agencia:* $${agencia.toLocaleString()}%0A*Mensajero:* $${mensajero.toLocaleString()}%0A` +
+                  `---%0A*Cliente:* ${document.getElementById("nombre").value}%0A*Pedido:* ${document.getElementById("pedido").value}`;
         
         window.open(`https://wa.me/5356746691?text=${msg}`, '_blank');
     }
 </script>
 </body>
-                                                            </html>
-                                                            
+    </html>
+    
